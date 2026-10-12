@@ -53,7 +53,7 @@
     .bracket-half.left { justify-content: flex-start; }
     .bracket-half.right { justify-content: flex-end; flex-direction: row-reverse; }
 
-    .round-col { display: flex; flex-direction: column; justify-content: space-around; height: 680px; width: 150px; }
+    .round-col { display: flex; flex-direction: column; justify-content: space-around; height: 680px; width: 155px; }
     .match-pair { display: flex; flex-direction: column; gap: 6px; }
 
     .slot {
@@ -69,6 +69,7 @@
     .tag-red { background: var(--g-red); color: #fff; }
     .tag-yellow { background: var(--g-yellow); color: #000; }
     .tag-green { background: var(--g-green); color: #fff; }
+    .tag-neutral { background: #283042; color: #7a869a; }
 
     .team-name { font-size: 0.82rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; }
 
@@ -130,12 +131,12 @@
 
       <div class="round-col">
         <div class="match-pair">
-          <div class="slot" id="slot-L-QF-1"><div class="slot-id tag-blue">W1</div><span class="team-name">---</span></div>
-          <div class="slot" id="slot-L-QF-2"><div class="slot-id tag-red">W2</div><span class="team-name">---</span></div>
+          <div class="slot" id="slot-L-QF-1"><div class="slot-id tag-neutral">QF1</div><span class="team-name">---</span></div>
+          <div class="slot" id="slot-L-QF-2"><div class="slot-id tag-neutral">QF2</div><span class="team-name">---</span></div>
         </div>
         <div class="match-pair">
-          <div class="slot" id="slot-L-QF-3"><div class="slot-id tag-yellow">W3</div><span class="team-name">---</span></div>
-          <div class="slot" id="slot-L-QF-4"><div class="slot-id tag-green">W4</div><span class="team-name">---</span></div>
+          <div class="slot" id="slot-L-QF-3"><div class="slot-id tag-neutral">QF3</div><span class="team-name">---</span></div>
+          <div class="slot" id="slot-L-QF-4"><div class="slot-id tag-neutral">QF4</div><span class="team-name">---</span></div>
         </div>
       </div>
 
@@ -147,8 +148,8 @@
 
       <div class="round-col">
         <div class="match-pair">
-          <div class="slot" id="slot-L-SF-1"><div class="slot-id tag-blue">SF1</div><span class="team-name">---</span></div>
-          <div class="slot" id="slot-L-SF-2"><div class="slot-id tag-yellow">SF2</div><span class="team-name">---</span></div>
+          <div class="slot" id="slot-L-SF-1"><div class="slot-id tag-neutral">SF1</div><span class="team-name">---</span></div>
+          <div class="slot" id="slot-L-SF-2"><div class="slot-id tag-neutral">SF2</div><span class="team-name">---</span></div>
         </div>
       </div>
 
@@ -166,8 +167,8 @@
       <div class="grand-final-box">
         <div style="color:var(--neon-lime); font-size:0.75rem; font-weight:900; margin-bottom:8px;">🔥 GRAND FINAL</div>
         <div style="display:flex; flex-direction:column; gap:6px;">
-          <div class="slot" id="slot-F-1"><div class="slot-id tag-blue">F1</div><span class="team-name">TBD</span></div>
-          <div class="slot" id="slot-F-2"><div class="slot-id tag-green">F2</div><span class="team-name">TBD</span></div>
+          <div class="slot" id="slot-F-1"><div class="slot-id tag-neutral">F1</div><span class="team-name">TBD</span></div>
+          <div class="slot" id="slot-F-2"><div class="slot-id tag-neutral">F2</div><span class="team-name">TBD</span></div>
         </div>
         <div class="champion-winner" id="slot-CHAMPION">👑 WINNER: TBD</div>
       </div>
@@ -203,12 +204,12 @@
 
       <div class="round-col">
         <div class="match-pair">
-          <div class="slot" id="slot-R-QF-1"><div class="slot-id tag-blue">W5</div><span class="team-name">---</span></div>
-          <div class="slot" id="slot-R-QF-2"><div class="slot-id tag-red">W6</div><span class="team-name">---</span></div>
+          <div class="slot" id="slot-R-QF-1"><div class="slot-id tag-neutral">QF5</div><span class="team-name">---</span></div>
+          <div class="slot" id="slot-R-QF-2"><div class="slot-id tag-neutral">QF6</div><span class="team-name">---</span></div>
         </div>
         <div class="match-pair">
-          <div class="slot" id="slot-R-QF-3"><div class="slot-id tag-yellow">W7</div><span class="team-name">---</span></div>
-          <div class="slot" id="slot-R-QF-4"><div class="slot-id tag-green">W8</div><span class="team-name">---</span></div>
+          <div class="slot" id="slot-R-QF-3"><div class="slot-id tag-neutral">QF7</div><span class="team-name">---</span></div>
+          <div class="slot" id="slot-R-QF-4"><div class="slot-id tag-neutral">QF8</div><span class="team-name">---</span></div>
         </div>
       </div>
 
@@ -220,8 +221,8 @@
 
       <div class="round-col">
         <div class="match-pair">
-          <div class="slot" id="slot-R-SF-1"><div class="slot-id tag-red">SF3</div><span class="team-name">---</span></div>
-          <div class="slot" id="slot-R-SF-2"><div class="slot-id tag-green">SF4</div><span class="team-name">---</span></div>
+          <div class="slot" id="slot-R-SF-1"><div class="slot-id tag-neutral">SF3</div><span class="team-name">---</span></div>
+          <div class="slot" id="slot-R-SF-2"><div class="slot-id tag-neutral">SF4</div><span class="team-name">---</span></div>
         </div>
       </div>
 
@@ -237,9 +238,7 @@
     const TOPIC = 'gdghk-bracket-channel-2026';
     let audioReady = false;
 
-    function enableAudio() {
-      audioReady = true;
-    }
+    function enableAudio() { audioReady = true; }
 
     function playFanfare() {
       if (!audioReady) return;
@@ -262,34 +261,66 @@
     }
 
     function handleAction(data) {
-      if (data.type === 'ADVANCE') {
+      if (data.type === 'ADVANCE_SLOT') {
         const slotEl = document.getElementById(`slot-${data.targetSlot}`);
         if (slotEl) {
+          const tagEl = slotEl.querySelector('.slot-id');
           const nameEl = slotEl.querySelector('.team-name');
-          if (nameEl) nameEl.innerText = data.winnerName;
+          if (tagEl) {
+            tagEl.className = `slot-id ${data.tagClass}`;
+            tagEl.innerText = data.teamNum;
+          }
+          if (nameEl) nameEl.innerText = data.teamName;
+
           slotEl.classList.add('highlight');
           setTimeout(() => slotEl.classList.remove('highlight'), 2000);
-          confetti({ particleCount: 70, spread: 60, origin: { y: 0.6 } });
+          confetti({ particleCount: 75, spread: 65, origin: { y: 0.6 } });
           playFanfare();
         }
       } 
       else if (data.type === 'CHAMPION') {
         const champEl = document.getElementById('slot-CHAMPION');
-        if (champEl) champEl.innerText = `👑 WINNER: ${data.winnerName}`;
-        confetti({ particleCount: 200, spread: 100, origin: { y: 0.5 } });
+        if (champEl) champEl.innerText = `👑 WINNER: #${data.teamNum} ${data.teamName}`;
+        confetti({ particleCount: 250, spread: 120, origin: { y: 0.5 } });
         playFanfare();
       }
       else if (data.type === 'RESET') {
-        const resetIds = ['L-QF-1','L-QF-2','L-QF-3','L-QF-4','R-QF-1','R-QF-2','R-QF-3','R-QF-4','L-SF-1','L-SF-2','R-SF-1','R-SF-2','F-1','F-2'];
-        resetIds.forEach(id => {
+        const qfSlots = [
+          ['L-QF-1','QF1'],['L-QF-2','QF2'],['L-QF-3','QF3'],['L-QF-4','QF4'],
+          ['R-QF-1','QF5'],['R-QF-2','QF6'],['R-QF-3','QF7'],['R-QF-4','QF8']
+        ];
+        qfSlots.forEach(([id, placeholder]) => {
           const el = document.getElementById(`slot-${id}`);
-          if (el) el.querySelector('.team-name').innerText = id.startsWith('F-') ? 'TBD' : '---';
+          if (el) {
+            el.querySelector('.slot-id').className = 'slot-id tag-neutral';
+            el.querySelector('.slot-id').innerText = placeholder;
+            el.querySelector('.team-name').innerText = '---';
+          }
         });
+
+        const sfSlots = [['L-SF-1','SF1'],['L-SF-2','SF2'],['R-SF-1','SF3'],['R-SF-2','SF4']];
+        sfSlots.forEach(([id, placeholder]) => {
+          const el = document.getElementById(`slot-${id}`);
+          if (el) {
+            el.querySelector('.slot-id').className = 'slot-id tag-neutral';
+            el.querySelector('.slot-id').innerText = placeholder;
+            el.querySelector('.team-name').innerText = '---';
+          }
+        });
+
+        ['F-1','F-2'].forEach((id, i) => {
+          const el = document.getElementById(`slot-${id}`);
+          if (el) {
+            el.querySelector('.slot-id').className = 'slot-id tag-neutral';
+            el.querySelector('.slot-id').innerText = `F${i+1}`;
+            el.querySelector('.team-name').innerText = 'TBD';
+          }
+        });
+
         document.getElementById('slot-CHAMPION').innerText = '👑 WINNER: TBD';
       }
     }
 
-    // Connect to Real-time Stream
     const eventSource = new EventSource(`https://ntfy.sh/${TOPIC}/sse`);
     eventSource.onmessage = (event) => {
       try {
@@ -299,7 +330,6 @@
       } catch (e) {}
     };
 
-    // Load recent history upon opening
     fetch(`https://ntfy.sh/${TOPIC}/json?poll=1&since=8h`)
       .then(r => r.text())
       .then(text => {
