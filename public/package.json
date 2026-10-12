@@ -1,0 +1,8 @@
+{
+  "name": "gdg-drawing-knockout",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node -e \"console.log('Deploy to Vercel or run node control.js')\""
+  },
+  "dependencies": {}
+}

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GDG HK - Drawing Game Knockout Bracket</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,700;0,900;1,900&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    :root {
+      --bg: #090b0e;
+      --card-bg: #141821;
+      --card-border: #283042;
+      --neon-lime: #b8ff02;
+      --g-blue: #4285F4;
+      --g-red: #EA4335;
+      --g-yellow: #FBBC05;
+      --g-green: #34A853;
+      --line: #2d3748;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      background-image: radial-gradient(circle at 50% 15%, rgba(66, 133, 244, 0.12) 0%, transparent 50%),
+                        radial-gradient(circle at 50% 85%, rgba(184, 255, 2, 0.05) 0%, transparent 60%);
+      color: #fff;
+      font-family: 'Outfit', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px 20px;
+      overflow-x: auto;
+    }
+    .side-pill { position: fixed; width: 14px; border-radius: 20px; z-index: 1; opacity: 0.85; }
+    .pill-left-1 { top: 12%; left: 14px; height: 110px; background: var(--g-red); }
+    .pill-left-2 { top: 32%; left: 14px; height: 70px; background: var(--g-yellow); }
+    .pill-left-3 { top: 48%; left: 14px; height: 140px; background: var(--g-blue); }
+    .pill-left-4 { top: 72%; left: 14px; height: 90px; background: var(--neon-lime); }
+    .pill-right-1 { top: 15%; right: 14px; height: 130px; background: var(--neon-lime); }
+    .pill-right-2 { top: 38%; right: 14px; height: 80px; background: var(--g-blue); }
+    .pill-right-3 { top: 54%; right: 14px; height: 110px; background: var(--g-red); }
+    .pill-right-4 { top: 76%; right: 14px; height: 60px; background: var(--g-yellow); }
+
+    .header { text-align: center; margin-bottom: 20px; }
+    .sub-head { font-family: 'Montserrat', sans-serif; font-size: 0.8rem; letter-spacing: 4px; font-weight: 800; color: #9aa0a6; }
+    .title {
+      font-family: 'Montserrat', sans-serif; font-style: italic; font-size: 2.7rem; font-weight: 900;
+      color: var(--neon-lime); text-shadow: 0 0 25px rgba(184, 255, 2, 0.4); margin-top: 4px;
+    }
+
+    .bracket-container { display: flex; align-items: center; justify-content: center; width: 100%; max-width: 1420px; }
+    .bracket-half { display: flex; flex: 1; align-items: center; }
+    .bracket-half.left { justify-content: flex-start; }
+    .bracket-half.right { justify-content: flex-end; flex-direction: row-reverse; }
+
+    .round-col { display: flex; flex-direction: column; justify-content: space-around; height: 680px; width: 150px; }
+    .match-pair { display: flex; flex-direction: column; gap: 6px; }
+
+    .slot {
+      background: var(--card-bg); border: 1.5px solid var(--card-border); border-radius: 8px;
+      padding: 8px 10px; display: flex; align-items: center; gap: 8px; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .slot.highlight {
+      border-color: var(--neon-lime); background: rgba(184, 255, 2, 0.15); transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(184, 255, 2, 0.4);
+    }
+    .slot-id { width: 22px; height: 22px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 800; flex-shrink: 0; }
+    .tag-blue { background: var(--g-blue); color: #fff; }
+    .tag-red { background: var(--g-red); color: #fff; }
+    .tag-yellow { background: var(--g-yellow); color: #000; }
+    .tag-green { background: var(--g-green); color: #fff; }
+
+    .team-name { font-size: 0.82rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; }
+
+    .connector-col { width: 28px; height: 680px; flex-shrink: 0; }
+    .connector-svg { width: 100%; height: 100%; stroke: var(--line); stroke-width: 2; fill: none; }
+
+    .center-podium { width: 260px; margin: 0 16px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+    .trophy-graphic { font-size: 4.8rem; filter: drop-shadow(0 4px 15px rgba(251, 188, 5, 0.5)); animation: float 3s ease-in-out infinite; }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+    .grand-final-box { margin-top: 14px; width: 100%; background: #10141d; border: 2px solid var(--neon-lime); border-radius: 12px; padding: 12px; }
+    .champion-winner { margin-top: 10px; background: #181f2c; border: 1.5px dashed var(--g-yellow); border-radius: 8px; padding: 8px; font-size: 0.95rem; font-weight: 800; color: var(--g-yellow); }
+
+    .live-indicator { margin-top: 18px; font-size: 0.75rem; letter-spacing: 2px; color: #7a869a; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+    .dot { width: 8px; height: 8px; background: var(--neon-lime); border-radius: 50%; box-shadow: 0 0 8px var(--neon-lime); animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+  </style>
+</head>
+<body>
+
+  <div class="side-pill pill-left-1"></div><div class="side-pill pill-left-2"></div>
+  <div class="side-pill pill-left-3"></div><div class="side-pill pill-left-4"></div>
+  <div class="side-pill pill-right-1"></div><div class="side-pill pill-right-2"></div>
+  <div class="side-pill pill-right-3"></div><div class="side-pill pill-right-4"></div>
+
+  <div class="header">
+    <div class="sub-head"><span style="color:var(--g-blue)">GDG</span> <span style="color:var(--g-red)">HONG</span> <span style="color:var(--g-yellow)">KONG</span> • <span style="color:var(--g-green)">GOOGLE</span> MINGLE</div>
+    <div class="title">KNOCKOUT BRACKET</div>
+  </div>
+
+  <div class="bracket-container">
+    <!-- LEFT HALF -->
+    <div class="bracket-half left">
+      <div class="round-col">
+        <div class="match-pair">
+          <div class="slot" id="slot-1"><div class="slot-id tag-blue">1</div><span class="team-name">Team 1</span></div>
+          <div class="slot" id="slot-2"><div class="slot-id tag-blue">2</div><span class="team-name">Team 2</span></div>
+        </div>
+        <div class="match-pair">
+          <div class="slot" id="slot-3"><div class="slot-id tag-red">3</div><span class="team-name">Team 3</span></div>
+          <div class="slot" id="slot-4"><div class="slot-id tag-red">4</div><span class="team-name">Team 4</span></div>
+        </div>
+        <div class="match-pair">
+          <div class="slot" id="slot-5"><div class="slot-id tag-yellow">5</div><span class="team-name">Team 5</span></div>
+          <div class="slot" id="slot-6"><div class="slot-id tag-yellow">6</div><span class="team-name">Team 6</span></div>
+        </div>
+        <div class="match-pair">
+          <div class="slot" id="slot-7"><div class="slot-id tag-green">7</div><span class="team-name">Team 7</span></div>
+          <div class="slot" id="slot-8"><div class="slot-id tag-green">8</div><span class="team-name">Team 8</span></div>
+        </div>
+      </div>
+
+      <div class="connector-col">
+        <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 28 680">
+          <path d="M 0 65 H 14 V 145 H 28 M 0 145 H 14"/><path d="M 0 235 H 14 V 315 H 28 M 0 315 H 14"/>
+          <path d="M 0 405 H 14 V 485 H 28 M 0 485 H 14"/><path d="M 0 575 H 14 V 655 H 28 M 0 655 H 14"/>
+        </svg>
+      </div>
+
+      <div class="round-col">
+        <div class="match-pair">
+          <div class="slot" id="slot-L-QF-1"><div class="slot-id tag-blue">W1</div><span class="team-name">---</span></div>
+          <div class="slot" id="slot-L-QF-2"><div class="slot-id tag-red">W2</div><span class="team-name">---</span></div>
+        </div>
+        <div class="match-pair">
+          <div class="slot" id="slot-L-QF-3"><div class="slot-id tag-yellow">W3</div><span class="team-name">---</span></div>
+          <div class="slot" id="slot-L-QF-4"><div class="slot-id tag-green">W4</div><span class="team-name">---</span></div>
+        </div>
+      </div>
+
+      <div class="connector-col">
+        <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 28 680">
+          <path d="M 0 145 H 14 V 340 H 28 M 0 535 H 14 V 340"/>
+        </svg>
+      </div>
+
+      <div class="round-col">
+        <div class="match-pair">
+          <div class="slot" id="slot-L-SF-1"><div class="slot-id tag-blue">SF1</div><span class="team-name">---</span></div>
+          <div class="slot" id="slot-L-SF-2"><div class="slot-id tag-yellow">SF2</div><span class="team-name">---</span></div>
+        </div>
+      </div>
+
+      <div class="connector-col">
+        <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 28 680"><path d="M 0 340 H 28"/></svg>
+      </div>
+    </div>
+
+    <!-- CENTER PODIUM -->
+    <div class="center-podium">
+      <div style="font-weight:900; letter-spacing:2px; color:#7a869a;">{ GDG HK }</div>
+      <div class="trophy-graphic">🏆</div>
+      <div style="font-family:'Montserrat'; font-weight:900; font-size:1rem; letter-spacing:2px;">ROAD TO GLORY</div>
+
+      <div class="grand-final-box">
+        <div style="color:var(--neon-lime); font-size:0.75rem; font-weight:900; margin-bottom:8px;">🔥 GRAND FINAL</div>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <div class="slot" id="slot-F-1"><div class="slot-id tag-blue">F1</div><span class="team-name">TBD</span></div>
+          <div class="slot" id="slot-F-2"><div class="slot-id tag-green">F2</div><span class="team-name">TBD</span></div>
+        </div>
+        <div class="champion-winner" id="slot-CHAMPION">👑 WINNER: TBD</div>
+      </div>
+    </div>
+
+    <!-- RIGHT HALF -->
+    <div class="bracket-half right">
+      <div class="round-col">
+        <div class="match-pair">
+          <div class="slot" id="slot-9"><div class="slot-id tag-blue">9</div><span class="team-name">Team 9</span></div>
+          <div class="slot" id="slot-10"><div class="slot-id tag-blue">10</div><span class="team-name">Team 10</span></div>
+        </div>
+        <div class="match-pair">
+          <div class="slot" id="slot-11"><div class="slot-id tag-red">11</div><span class="team-name">Team 11</span></div>
+          <div class="slot" id="slot-12"><div class="slot-id tag-red">12</div><span class="team-name">Team 12</span></div>
+        </div>
+        <div class="match-pair">
+          <div class="slot" id="slot-13"><div class="slot-id tag-yellow">13</div><span class="team-name">Team 13</span></div>
+          <div class="slot" id="slot-14"><div class="slot-id tag-yellow">14</div><span class="team-name">Team 14</span></div>
+        </div>
+        <div class="match-pair">
+          <div class="slot" id="slot-15"><div class="slot-id tag-green">15</div><span class="team-name">Team 15</span></div>
+          <div class="slot" id="slot-16"><div class="slot-id tag-green">16</div><span class="team-name">Team 16</span></div>
+        </div>
+      </div>
+
+      <div class="connector-col">
+        <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 28 680">
+          <path d="M 28 65 H 14 V 145 H 0 M 28 145 H 14"/><path d="M 28 235 H 14 V 315 H 0 M 28 315 H 14"/>
+          <path d="M 28 405 H 14 V 485 H 0 M 28 485 H 14"/><path d="M 28 575 H 14 V 655 H 0 M 28 655 H 14"/>
+        </svg>
+      </div>
+
+      <div class="round-col">
+        <div class="match-pair">
+          <div class="slot" id="slot-R-QF-1"><div class="slot-id tag-blue">W5</div><span class="team-name">---</span></div>
+          <div class="slot" id="slot-R-QF-2"><div class="slot-id tag-red">W6</div><span class="team-name">---</span></div>
+        </div>
+        <div class="match-pair">
+          <div class="slot" id="slot-R-QF-3"><div class="slot-id tag-yellow">W7</div><span class="team-name">---</span></div>
+          <div class="slot" id="slot-R-QF-4"><div class="slot-id tag-green">W8</div><span class="team-name">---</span></div>
+        </div>
+      </div>
+
+      <div class="connector-col">
+        <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 28 680">
+          <path d="M 28 145 H 14 V 340 H 0 M 28 535 H 14 V 340"/>
+        </svg>
+      </div>
+
+      <div class="round-col">
+        <div class="match-pair">
+          <div class="slot" id="slot-R-SF-1"><div class="slot-id tag-red">SF3</div><span class="team-name">---</span></div>
+          <div class="slot" id="slot-R-SF-2"><div class="slot-id tag-green">SF4</div><span class="team-name">---</span></div>
+        </div>
+      </div>
+
+      <div class="connector-col">
+        <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 28 680"><path d="M 28 340 H 0"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="live-indicator"><div class="dot"></div> LIVE SYNCED WITH STAGE CONTROLLER</div>
+
+  <script>
+    let lastStateTimestamp = 0;
+
+    // Web Audio Synthesized Victory FX (No external audio files needed!)
+    function playVictoryFanfare() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const notes = [261.63, 329.63, 392.00, 523.25]; // C E G C
+        notes.forEach((freq, i) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = "triangle";
+          osc.frequency.setValueAtTime(freq, ctx.currentTime + i * 0.1);
+          gain.gain.setValueAtTime(0.2, ctx.currentTime + i * 0.1);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.1 + 0.4);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(ctx.currentTime + i * 0.1);
+          osc.stop(ctx.currentTime + i * 0.1 + 0.45);
+        });
+      } catch (e) {}
+    }
+
+    async function pollState() {
+      try {
+        const res = await fetch('/api/state');
+        const data = await res.json();
+
+        // Render R1 teams
+        if (data.teams) {
+          for (let i = 1; i <= 16; i++) {
+            const el = document.querySelector(`#slot-${i} .team-name`);
+            if (el && data.teams[i]) el.innerText = data.teams[i];
+          }
+        }
+
+        // Check if there's a new update
+        if (data.lastUpdated && data.lastUpdated > lastStateTimestamp) {
+          if (lastStateTimestamp !== 0) {
+            playVictoryFanfare();
+            confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+          }
+          lastStateTimestamp = data.lastUpdated;
+        }
+
+        // Render advanced matches
+        if (data.matches) {
+          for (const [slotId, name] of Object.entries(data.matches)) {
+            const slotEl = document.getElementById(`slot-${slotId}`);
+            if (slotEl) {
+              if (slotId === 'CHAMPION') {
+                slotEl.innerText = `👑 WINNER: ${name}`;
+              } else {
+                const nameEl = slotEl.querySelector('.team-name');
+                if (nameEl) nameEl.innerText = name;
+              }
+            }
+          }
+        }
+      } catch (err) {}
+    }
+
+    setInterval(pollState, 1000);
+    pollState();
+  </script>
+</body>
+</html>
