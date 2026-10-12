@@ -1,6 +1,3 @@
-// Global in-memory cache for Vercel edge runtime (with persistent fallback)
-let globalState = null;
-
 const defaultState = {
   teams: {
     "1": "Team Alpha", "2": "Team Pixel",
@@ -22,9 +19,20 @@ const defaultState = {
   lastUpdated: Date.now()
 };
 
-module.exports = (req, res) => {
+const KV_URL = 'https://kvdb.io/A4xQ7wJz8yvE7F9P9qKx7M/gdg_state';
+
+module.exports = async (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Cache-Control", "no-store, max-age=0");
-  if (!globalState) globalState = defaultState;
-  res.status(200).json(globalState);
+  res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+
+  try {
+    const response = await fetch(KV_URL);
+    if (!response.ok) {
+      return res.status(200).json(defaultState);
+    }
+    const data = await response.json();
+    return res.status(200).json(data);
+  } catch (err) {
+    return res.status(200).json(defaultState);
+  }
 };
