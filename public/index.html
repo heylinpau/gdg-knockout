@@ -2,13 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>GDGoC PolyU - Google Drawing Game Knockout</title>
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700;900&family=Outfit:wght@400;600;700;800;900&family=Montserrat:ital,wght@0,800;0,900;1,900&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
     :root {
-      --bg: #080a0f;
-      --card-bg: rgba(20, 24, 33, 0.85);
+      --bg: #07090e;
+      --card-bg: rgba(18, 22, 31, 0.92);
       --card-border: #242c3d;
       --neon-lime: #b8ff02;
       --g-blue: #4285F4;
@@ -18,45 +19,64 @@
       --line: #222a3a;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
+    
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
       background: var(--bg);
+      color: #fff;
+      font-family: 'Google Sans', 'Outfit', sans-serif;
+    }
+
+    body {
       background-image: 
         radial-gradient(circle at 50% 10%, rgba(66, 133, 244, 0.12) 0%, transparent 45%),
         radial-gradient(circle at 10% 90%, rgba(234, 67, 53, 0.08) 0%, transparent 40%),
         radial-gradient(circle at 90% 90%, rgba(52, 168, 83, 0.08) 0%, transparent 40%);
-      color: #fff;
-      font-family: 'Google Sans', 'Outfit', sans-serif;
-      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 14px 20px;
-      overflow-x: auto;
+      justify-content: center;
+      position: relative;
     }
 
     /* DECORATIVE SIDE PILLS */
-    .side-pill { position: fixed; width: 12px; border-radius: 20px; z-index: 1; opacity: 0.85; }
-    .pill-left-1 { top: 12%; left: 12px; height: 110px; background: var(--g-red); }
-    .pill-left-2 { top: 32%; left: 12px; height: 70px; background: var(--g-yellow); }
-    .pill-left-3 { top: 48%; left: 12px; height: 140px; background: var(--g-blue); }
-    .pill-left-4 { top: 72%; left: 12px; height: 90px; background: var(--neon-lime); }
-    .pill-right-1 { top: 15%; right: 12px; height: 130px; background: var(--neon-lime); }
-    .pill-right-2 { top: 38%; right: 12px; height: 80px; background: var(--g-blue); }
-    .pill-right-3 { top: 54%; right: 12px; height: 110px; background: var(--g-red); }
-    .pill-right-4 { top: 76%; right: 12px; height: 60px; background: var(--g-yellow); }
+    .side-pill { position: fixed; width: 10px; border-radius: 20px; z-index: 1; opacity: 0.85; }
+    .pill-left-1 { top: 12%; left: 10px; height: 100px; background: var(--g-red); }
+    .pill-left-2 { top: 32%; left: 10px; height: 60px; background: var(--g-yellow); }
+    .pill-left-3 { top: 48%; left: 10px; height: 130px; background: var(--g-blue); }
+    .pill-left-4 { top: 72%; left: 10px; height: 80px; background: var(--neon-lime); }
+    .pill-right-1 { top: 15%; right: 10px; height: 120px; background: var(--neon-lime); }
+    .pill-right-2 { top: 38%; right: 10px; height: 70px; background: var(--g-blue); }
+    .pill-right-3 { top: 54%; right: 10px; height: 100px; background: var(--g-red); }
+    .pill-right-4 { top: 76%; right: 10px; height: 50px; background: var(--g-yellow); }
+
+    /* MASTER RESPONSIVE SCALER WRAPPER */
+    #stage-scaler {
+      width: 1480px;
+      height: 820px;
+      transform-origin: center center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 2;
+    }
 
     /* GDG LOGO & HEADER */
-    .header { text-align: center; margin-bottom: 12px; z-index: 2; display: flex; flex-direction: column; align-items: center; }
+    .header { text-align: center; margin-bottom: 8px; display: flex; flex-direction: column; align-items: center; }
     .gdg-brand {
       display: flex;
       align-items: center;
       gap: 12px;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
     }
-    .gdg-svg-logo { width: 44px; height: 26px; }
+    .gdg-svg-logo { width: 42px; height: 24px; }
     .gdg-title-text {
-      font-family: 'Google Sans', sans-serif;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       font-weight: 700;
       letter-spacing: 2px;
       text-transform: uppercase;
@@ -73,30 +93,32 @@
     .tournament-title {
       font-family: 'Montserrat', sans-serif;
       font-style: italic;
-      font-size: 2.5rem;
+      font-size: 2.3rem;
       font-weight: 900;
       letter-spacing: 1.5px;
       text-transform: uppercase;
       color: var(--neon-lime);
       text-shadow: 0 0 25px rgba(184, 255, 2, 0.4);
-      line-height: 1.1;
+      line-height: 1;
     }
 
     /* BRACKET LAYOUT */
-    .bracket-container { display: flex; align-items: center; justify-content: center; width: 100%; max-width: 1480px; z-index: 2; }
+    .bracket-container { display: flex; align-items: center; justify-content: center; width: 100%; }
     .bracket-half { display: flex; flex: 1; align-items: center; }
     .bracket-half.left { justify-content: flex-start; }
     .bracket-half.right { justify-content: flex-end; flex-direction: row-reverse; }
 
-    .round-col { display: flex; flex-direction: column; justify-content: space-around; height: 690px; width: 165px; }
+    .round-col { display: flex; flex-direction: column; justify-content: space-around; height: 660px; width: 205px; }
     .match-pair { display: flex; flex-direction: column; gap: 6px; }
 
-    /* SLOT CARDS */
+    /* UNIFORM SLOT CARDS (205px Wide - No Name Cutoff) */
     .slot {
+      width: 205px;
+      height: 38px;
       background: var(--card-bg);
       border: 1.5px solid var(--card-border);
-      border-radius: 10px;
-      padding: 7px 10px;
+      border-radius: 9px;
+      padding: 0 10px;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -105,19 +127,19 @@
     }
     .slot.highlight {
       border-color: var(--neon-lime) !important;
-      background: rgba(184, 255, 2, 0.18) !important;
+      background: rgba(184, 255, 2, 0.22) !important;
       transform: scale(1.06);
       box-shadow: 0 0 20px rgba(184, 255, 2, 0.5);
     }
 
     .slot-id {
-      width: 22px;
-      height: 22px;
-      border-radius: 5px;
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-weight: 800;
       flex-shrink: 0;
     }
@@ -142,38 +164,36 @@
       font-size: 0.82rem;
       font-weight: 700;
       white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
       flex: 1;
     }
 
     /* CONNECTOR LINES */
-    .connector-col { width: 26px; height: 690px; flex-shrink: 0; }
+    .connector-col { width: 22px; height: 660px; flex-shrink: 0; }
     .connector-svg { width: 100%; height: 100%; stroke: var(--line); stroke-width: 2; fill: none; }
 
-    /* CENTER TROPHY & GRAND FINAL */
-    .center-podium { width: 270px; margin: 0 14px; display: flex; flex-direction: column; align-items: center; text-align: center; }
-    .trophy-graphic { font-size: 4.6rem; filter: drop-shadow(0 4px 18px rgba(251, 188, 5, 0.55)); animation: float 3s ease-in-out infinite; }
+    /* CENTER PODIUM */
+    .center-podium { width: 270px; margin: 0 10px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+    .trophy-graphic { font-size: 4.2rem; filter: drop-shadow(0 4px 18px rgba(251, 188, 5, 0.55)); animation: float 3s ease-in-out infinite; }
     @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
 
     .grand-final-box {
-      margin-top: 10px;
+      margin-top: 8px;
       width: 100%;
       background: #11151f;
       border: 2px solid var(--neon-lime);
       box-shadow: 0 0 25px rgba(184, 255, 2, 0.2);
       border-radius: 12px;
-      padding: 12px;
+      padding: 10px;
     }
-    .final-badge { font-family: 'Montserrat'; font-size: 0.78rem; font-weight: 900; color: var(--neon-lime); letter-spacing: 2px; margin-bottom: 8px; }
+    .final-badge { font-family: 'Montserrat'; font-size: 0.75rem; font-weight: 900; color: var(--neon-lime); letter-spacing: 2px; margin-bottom: 6px; }
     
     .champion-preview-btn {
-      margin-top: 10px;
+      margin-top: 8px;
       background: linear-gradient(135deg, #1f2738 0%, #11151f 100%);
       border: 1.5px dashed var(--g-yellow);
       border-radius: 8px;
-      padding: 10px;
-      font-size: 0.9rem;
+      padding: 8px;
+      font-size: 0.88rem;
       font-weight: 800;
       color: var(--g-yellow);
       cursor: pointer;
@@ -181,7 +201,7 @@
     }
     .champion-preview-btn:hover { background: rgba(251, 188, 5, 0.15); transform: scale(1.02); }
 
-    /* FULLSCREEN WINNER OVERLAY (THE WOW REVEAL SCREEN) */
+    /* FULLSCREEN WINNER OVERLAY (THE GRAND REVEAL) */
     .winner-overlay {
       position: fixed;
       top: 0; left: 0; width: 100vw; height: 100vh;
@@ -208,8 +228,7 @@
       align-items: center;
       text-align: center;
       max-width: 650px;
-      padding: 30px;
-      position: relative;
+      padding: 24px;
     }
     .winner-tag {
       font-family: 'Montserrat', sans-serif;
@@ -218,64 +237,98 @@
       letter-spacing: 4px;
       color: var(--neon-lime);
       text-transform: uppercase;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       text-shadow: 0 0 15px rgba(184, 255, 2, 0.6);
     }
     .winner-logo-box {
-      width: 130px;
-      height: 130px;
+      width: 120px;
+      height: 120px;
       background: rgba(255, 255, 255, 0.05);
       border: 2px solid rgba(255, 255, 255, 0.15);
-      border-radius: 28px;
+      border-radius: 26px;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 15px 0 20px;
+      margin: 12px 0 18px;
       box-shadow: 0 0 50px rgba(66, 133, 244, 0.35);
       animation: pulseLogo 2s infinite ease-in-out;
     }
-    .winner-logo-box svg { width: 75px; height: 75px; }
+    .winner-logo-box svg { width: 70px; height: 70px; }
     @keyframes pulseLogo {
       0%, 100% { transform: scale(1); box-shadow: 0 0 40px rgba(251, 188, 5, 0.3); }
       50% { transform: scale(1.08); box-shadow: 0 0 70px rgba(184, 255, 2, 0.6); }
     }
 
     .winner-team-title {
-      font-family: 'Google Sans', sans-serif;
-      font-size: 3.2rem;
+      font-size: 3rem;
       font-weight: 900;
       color: #ffffff;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       letter-spacing: -0.5px;
     }
     .winner-category {
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       color: #9aa0a6;
       font-weight: 500;
       letter-spacing: 1px;
     }
 
     .close-overlay-btn {
-      margin-top: 30px;
+      margin-top: 24px;
       background: rgba(255, 255, 255, 0.1);
       border: 1px solid rgba(255, 255, 255, 0.2);
       color: #fff;
-      padding: 10px 24px;
+      padding: 9px 22px;
       border-radius: 20px;
-      font-family: 'Google Sans', sans-serif;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       font-weight: 700;
       cursor: pointer;
       transition: all 0.2s;
     }
     .close-overlay-btn:hover { background: var(--neon-lime); color: #000; }
 
-    .live-indicator { margin-top: 14px; font-size: 0.75rem; letter-spacing: 2px; color: #7a869a; font-weight: 700; display: flex; align-items: center; gap: 8px; }
-    .dot { width: 8px; height: 8px; background: var(--neon-lime); border-radius: 50%; box-shadow: 0 0 8px var(--neon-lime); animation: pulse 1.5s infinite; }
-    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+    /* ROTATE DEVICE MOBILE OVERLAY */
+    .portrait-warning {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(7, 9, 14, 0.97);
+      z-index: 9999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+    }
+    .phone-icon {
+      font-size: 3.5rem;
+      animation: rotatePhone 2s infinite ease-in-out;
+      margin-bottom: 16px;
+    }
+    @keyframes rotatePhone {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(90deg); }
+    }
+
+    /* Trigger Portrait Warning on Mobile Portrait Mode */
+    @media (max-width: 900px) and (orientation: portrait) {
+      .portrait-warning { display: flex; }
+      #stage-scaler { display: none; }
+    }
   </style>
 </head>
 <body onclick="enableAudio()">
+
+  <!-- MOBILE ROTATION NOTICE -->
+  <div class="portrait-warning">
+    <div class="phone-icon">📱</div>
+    <div style="font-family:'Montserrat'; font-size:1.3rem; font-weight:900; color:var(--neon-lime); margin-bottom:8px;">
+      PLEASE ROTATE YOUR DEVICE
+    </div>
+    <div style="color:#9aa0a6; font-size:0.9rem; max-width:280px;">
+      Switch to <b>Landscape Mode</b> to view the GDGoC PolyU tournament bracket!
+    </div>
+  </div>
 
   <!-- SIDE ACCENTS -->
   <div class="side-pill pill-left-1"></div><div class="side-pill pill-left-2"></div>
@@ -283,158 +336,160 @@
   <div class="side-pill pill-right-1"></div><div class="side-pill pill-right-2"></div>
   <div class="side-pill pill-right-3"></div><div class="side-pill pill-right-4"></div>
 
-  <!-- HEADER -->
-  <div class="header">
-    <div class="gdg-brand">
-      <!-- EXACT GDG CHEVRON EMBEDDED LOGO -->
-      <svg class="gdg-svg-logo" viewBox="0 0 100 55">
-        <path d="M 30,12 L 14,28 A 6,6 0 0,0 14,36 L 30,52 A 6,6 0 0,0 38,44 L 26,32 L 38,20 A 6,6 0 0,0 30,12 Z" fill="#EA4335" />
-        <path d="M 22,20 L 10,32 A 6,6 0 0,0 10,40 L 22,52 A 6,6 0 0,0 30,44 L 18,32 L 30,20 A 6,6 0 0,0 22,20 Z" fill="#4285F4" />
-        <path d="M 70,12 L 86,28 A 6,6 0 0,1 86,36 L 70,52 A 6,6 0 0,1 62,44 L 74,32 L 62,20 A 6,6 0 0,1 70,12 Z" fill="#34A853" />
-        <path d="M 78,20 L 90,32 A 6,6 0 0,1 90,40 L 78,52 A 6,6 0 0,1 70,44 L 82,32 L 70,20 A 6,6 0 0,1 78,20 Z" fill="#FBBC05" />
-      </svg>
-      <div class="gdg-title-text">
-        Google Developer Groups on Campus <span class="polyu">PolyU</span>
-      </div>
-    </div>
-    <div class="tournament-title">DRAWING BATTLE KNOCKOUT</div>
-  </div>
-
-  <!-- TOURNAMENT BRACKET -->
-  <div class="bracket-container">
+  <!-- STAGE SCALER WRAPPER -->
+  <div id="stage-scaler">
     
-    <!-- LEFT HALF (TEAMS 1 TO 8) -->
-    <div class="bracket-half left">
-      <div class="round-col">
-        <div class="match-pair">
-          <div class="slot" id="slot-1"><div class="slot-id tag-blue">1</div><div class="product-icon" id="icon-1"></div><span class="team-name">Google Docs</span></div>
-          <div class="slot" id="slot-2"><div class="slot-id tag-blue">2</div><div class="product-icon" id="icon-2"></div><span class="team-name">Google Sheets</span></div>
-        </div>
-        <div class="match-pair">
-          <div class="slot" id="slot-3"><div class="slot-id tag-yellow">3</div><div class="product-icon" id="icon-3"></div><span class="team-name">Google Slides</span></div>
-          <div class="slot" id="slot-4"><div class="slot-id tag-purple">4</div><div class="product-icon" id="icon-4"></div><span class="team-name">Google Forms</span></div>
-        </div>
-        <div class="match-pair">
-          <div class="slot" id="slot-5"><div class="slot-id tag-red">5</div><div class="product-icon" id="icon-5"></div><span class="team-name">YouTube</span></div>
-          <div class="slot" id="slot-6"><div class="slot-id tag-blue">6</div><div class="product-icon" id="icon-6"></div><span class="team-name">Google TV</span></div>
-        </div>
-        <div class="match-pair">
-          <div class="slot" id="slot-7"><div class="slot-id tag-yellow">7</div><div class="product-icon" id="icon-7"></div><span class="team-name">Google Podcasts</span></div>
-          <div class="slot" id="slot-8"><div class="slot-id tag-blue">8</div><div class="product-icon" id="icon-8"></div><span class="team-name">Google Books</span></div>
-        </div>
-      </div>
-
-      <div class="connector-col">
-        <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 28 690">
-          <path d="M 0 65 H 14 V 145 H 28 M 0 145 H 14"/><path d="M 0 235 H 14 V 315 H 28 M 0 315 H 14"/>
-          <path d="M 0 405 H 14 V 485 H 28 M 0 485 H 14"/><path d="M 0 575 H 14 V 655 H 28 M 0 655 H 14"/>
+    <!-- HEADER -->
+    <div class="header">
+      <div class="gdg-brand">
+        <!-- EXACT GDG CHEVRON EMBEDDED LOGO -->
+        <svg class="gdg-svg-logo" viewBox="0 0 100 55">
+          <path d="M 30,12 L 14,28 A 6,6 0 0,0 14,36 L 30,52 A 6,6 0 0,0 38,44 L 26,32 L 38,20 A 6,6 0 0,0 30,12 Z" fill="#EA4335" />
+          <path d="M 22,20 L 10,32 A 6,6 0 0,0 10,40 L 22,52 A 6,6 0 0,0 30,44 L 18,32 L 30,20 A 6,6 0 0,0 22,20 Z" fill="#4285F4" />
+          <path d="M 70,12 L 86,28 A 6,6 0 0,1 86,36 L 70,52 A 6,6 0 0,1 62,44 L 74,32 L 62,20 A 6,6 0 0,1 70,12 Z" fill="#34A853" />
+          <path d="M 78,20 L 90,32 A 6,6 0 0,1 90,40 L 78,52 A 6,6 0 0,1 70,44 L 82,32 L 70,20 A 6,6 0 0,1 78,20 Z" fill="#FBBC05" />
         </svg>
-      </div>
-
-      <div class="round-col">
-        <div class="match-pair">
-          <div class="slot" id="slot-L-QF-1"><div class="slot-id tag-neutral">QF1</div><div class="product-icon"></div><span class="team-name">---</span></div>
-          <div class="slot" id="slot-L-QF-2"><div class="slot-id tag-neutral">QF2</div><div class="product-icon"></div><span class="team-name">---</span></div>
-        </div>
-        <div class="match-pair">
-          <div class="slot" id="slot-L-QF-3"><div class="slot-id tag-neutral">QF3</div><div class="product-icon"></div><span class="team-name">---</span></div>
-          <div class="slot" id="slot-L-QF-4"><div class="slot-id tag-neutral">QF4</div><div class="product-icon"></div><span class="team-name">---</span></div>
+        <div class="gdg-title-text">
+          Google Developer Groups on Campus <span class="polyu">PolyU</span>
         </div>
       </div>
-
-      <div class="connector-col">
-        <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 28 690">
-          <path d="M 0 145 H 14 V 345 H 28 M 0 545 H 14 V 345"/>
-        </svg>
-      </div>
-
-      <div class="round-col">
-        <div class="match-pair">
-          <div class="slot" id="slot-L-SF-1"><div class="slot-id tag-neutral">SF1</div><div class="product-icon"></div><span class="team-name">---</span></div>
-          <div class="slot" id="slot-L-SF-2"><div class="slot-id tag-neutral">SF2</div><div class="product-icon"></div><span class="team-name">---</span></div>
-        </div>
-      </div>
-
-      <div class="connector-col">
-        <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 28 690"><path d="M 0 345 H 28"/></svg>
-      </div>
+      <div class="tournament-title">DRAWING BATTLE KNOCKOUT</div>
     </div>
 
-    <!-- CENTER TROPHY & FINALS -->
-    <div class="center-podium">
-      <div style="font-weight:900; letter-spacing:2px; color:#7a869a; font-size:0.85rem;">GDGoC PolyU • 2026</div>
-      <div class="trophy-graphic">🏆</div>
-      <div style="font-family:'Montserrat'; font-weight:900; font-size:1.1rem; letter-spacing:2px;">ROAD TO GLORY</div>
+    <!-- TOURNAMENT BRACKET -->
+    <div class="bracket-container">
+      
+      <!-- LEFT HALF (TEAMS 1 TO 8) -->
+      <div class="bracket-half left">
+        <div class="round-col">
+          <div class="match-pair">
+            <div class="slot" id="slot-1"><div class="slot-id tag-blue">1</div><div class="product-icon" id="icon-1"></div><span class="team-name">Google Docs</span></div>
+            <div class="slot" id="slot-2"><div class="slot-id tag-green">2</div><div class="product-icon" id="icon-2"></div><span class="team-name">Google Sheets</span></div>
+          </div>
+          <div class="match-pair">
+            <div class="slot" id="slot-3"><div class="slot-id tag-yellow">3</div><div class="product-icon" id="icon-3"></div><span class="team-name">Google Slides</span></div>
+            <div class="slot" id="slot-4"><div class="slot-id tag-purple">4</div><div class="product-icon" id="icon-4"></div><span class="team-name">Google Forms</span></div>
+          </div>
+          <div class="match-pair">
+            <div class="slot" id="slot-5"><div class="slot-id tag-red">5</div><div class="product-icon" id="icon-5"></div><span class="team-name">YouTube</span></div>
+            <div class="slot" id="slot-6"><div class="slot-id tag-blue">6</div><div class="product-icon" id="icon-6"></div><span class="team-name">Google TV</span></div>
+          </div>
+          <div class="match-pair">
+            <div class="slot" id="slot-7"><div class="slot-id tag-yellow">7</div><div class="product-icon" id="icon-7"></div><span class="team-name">Google Podcasts</span></div>
+            <div class="slot" id="slot-8"><div class="slot-id tag-blue">8</div><div class="product-icon" id="icon-8"></div><span class="team-name">Google Books</span></div>
+          </div>
+        </div>
 
-      <div class="grand-final-box">
-        <div class="final-badge">🔥 GRAND FINAL</div>
-        <div style="display:flex; flex-direction:column; gap:6px;">
-          <div class="slot" id="slot-F-1"><div class="slot-id tag-neutral">F1</div><div class="product-icon"></div><span class="team-name">TBD</span></div>
-          <div class="slot" id="slot-F-2"><div class="slot-id tag-neutral">F2</div><div class="product-icon"></div><span class="team-name">TBD</span></div>
+        <div class="connector-col">
+          <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 22 660">
+            <path d="M 0 60 H 11 V 140 H 22 M 0 140 H 11"/><path d="M 0 225 H 11 V 305 H 22 M 0 305 H 11"/>
+            <path d="M 0 390 H 11 V 470 H 22 M 0 470 H 11"/><path d="M 0 555 H 11 V 635 H 22 M 0 635 H 11"/>
+          </svg>
         </div>
-        <div class="champion-preview-btn" id="slot-CHAMPION" onclick="showWinnerScreen()">👑 CHAMPION: TBD</div>
-      </div>
-    </div>
 
-    <!-- RIGHT HALF (TEAMS 9 TO 16) -->
-    <div class="bracket-half right">
-      <div class="round-col">
-        <div class="match-pair">
-          <div class="slot" id="slot-9"><div class="slot-id tag-red">9</div><div class="product-icon" id="icon-9"></div><span class="team-name">Gmail</span></div>
-          <div class="slot" id="slot-10"><div class="slot-id tag-blue">10</div><div class="product-icon" id="icon-10"></div><span class="team-name">Google Calendar</span></div>
+        <div class="round-col">
+          <div class="match-pair">
+            <div class="slot" id="slot-L-QF-1"><div class="slot-id tag-neutral">QF1</div><div class="product-icon"></div><span class="team-name">---</span></div>
+            <div class="slot" id="slot-L-QF-2"><div class="slot-id tag-neutral">QF2</div><div class="product-icon"></div><span class="team-name">---</span></div>
+          </div>
+          <div class="match-pair">
+            <div class="slot" id="slot-L-QF-3"><div class="slot-id tag-neutral">QF3</div><div class="product-icon"></div><span class="team-name">---</span></div>
+            <div class="slot" id="slot-L-QF-4"><div class="slot-id tag-neutral">QF4</div><div class="product-icon"></div><span class="team-name">---</span></div>
+          </div>
         </div>
-        <div class="match-pair">
-          <div class="slot" id="slot-11"><div class="slot-id tag-green">11</div><div class="product-icon" id="icon-11"></div><span class="team-name">Google Meet</span></div>
-          <div class="slot" id="slot-12"><div class="slot-id tag-yellow">12</div><div class="product-icon" id="icon-12"></div><span class="team-name">Google Drive</span></div>
-        </div>
-        <div class="match-pair">
-          <div class="slot" id="slot-13"><div class="slot-id tag-green">13</div><div class="product-icon" id="icon-13"></div><span class="team-name">Android</span></div>
-          <div class="slot" id="slot-14"><div class="slot-id tag-blue">14</div><div class="product-icon" id="icon-14"></div><span class="team-name">Google Pixel</span></div>
-        </div>
-        <div class="match-pair">
-          <div class="slot" id="slot-15"><div class="slot-id tag-yellow">15</div><div class="product-icon" id="icon-15"></div><span class="team-name">Chromebook</span></div>
-          <div class="slot" id="slot-16"><div class="slot-id tag-blue">16</div><div class="product-icon" id="icon-16"></div><span class="team-name">Google Nest</span></div>
-        </div>
-      </div>
 
-      <div class="connector-col">
-        <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 28 690">
-          <path d="M 28 65 H 14 V 145 H 0 M 28 145 H 14"/><path d="M 28 235 H 14 V 315 H 0 M 28 315 H 14"/>
-          <path d="M 28 405 H 14 V 485 H 0 M 28 485 H 14"/><path d="M 28 575 H 14 V 655 H 0 M 28 655 H 14"/>
-        </svg>
-      </div>
-
-      <div class="round-col">
-        <div class="match-pair">
-          <div class="slot" id="slot-R-QF-1"><div class="slot-id tag-neutral">QF5</div><div class="product-icon"></div><span class="team-name">---</span></div>
-          <div class="slot" id="slot-R-QF-2"><div class="slot-id tag-neutral">QF6</div><div class="product-icon"></div><span class="team-name">---</span></div>
+        <div class="connector-col">
+          <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 22 660">
+            <path d="M 0 140 H 11 V 330 H 22 M 0 520 H 11 V 330"/>
+          </svg>
         </div>
-        <div class="match-pair">
-          <div class="slot" id="slot-R-QF-3"><div class="slot-id tag-neutral">QF7</div><div class="product-icon"></div><span class="team-name">---</span></div>
-          <div class="slot" id="slot-R-QF-4"><div class="slot-id tag-neutral">QF8</div><div class="product-icon"></div><span class="team-name">---</span></div>
+
+        <div class="round-col">
+          <div class="match-pair">
+            <div class="slot" id="slot-L-SF-1"><div class="slot-id tag-neutral">SF1</div><div class="product-icon"></div><span class="team-name">---</span></div>
+            <div class="slot" id="slot-L-SF-2"><div class="slot-id tag-neutral">SF2</div><div class="product-icon"></div><span class="team-name">---</span></div>
+          </div>
         </div>
-      </div>
 
-      <div class="connector-col">
-        <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 28 690">
-          <path d="M 28 145 H 14 V 345 H 0 M 28 545 H 14 V 345"/>
-        </svg>
-      </div>
-
-      <div class="round-col">
-        <div class="match-pair">
-          <div class="slot" id="slot-R-SF-1"><div class="slot-id tag-neutral">SF3</div><div class="product-icon"></div><span class="team-name">---</span></div>
-          <div class="slot" id="slot-R-SF-2"><div class="slot-id tag-neutral">SF4</div><div class="product-icon"></div><span class="team-name">---</span></div>
+        <div class="connector-col">
+          <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 22 660"><path d="M 0 330 H 22"/></svg>
         </div>
       </div>
 
-      <div class="connector-col">
-        <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 28 690"><path d="M 28 345 H 0"/></svg>
+      <!-- CENTER PODIUM -->
+      <div class="center-podium">
+        <div style="font-weight:900; letter-spacing:2px; color:#7a869a; font-size:0.85rem;">GDGoC PolyU • 2026</div>
+        <div class="trophy-graphic">🏆</div>
+        <div style="font-family:'Montserrat'; font-weight:900; font-size:1.1rem; letter-spacing:2px;">ROAD TO GLORY</div>
+
+        <div class="grand-final-box">
+          <div class="final-badge">🔥 GRAND FINAL</div>
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <div class="slot" id="slot-F-1"><div class="slot-id tag-neutral">F1</div><div class="product-icon"></div><span class="team-name">TBD</span></div>
+            <div class="slot" id="slot-F-2"><div class="slot-id tag-neutral">F2</div><div class="product-icon"></div><span class="team-name">TBD</span></div>
+          </div>
+          <div class="champion-preview-btn" id="slot-CHAMPION" onclick="showWinnerScreen()">👑 CHAMPION: TBD</div>
+        </div>
+      </div>
+
+      <!-- RIGHT HALF (TEAMS 9 TO 16) -->
+      <div class="bracket-half right">
+        <div class="round-col">
+          <div class="match-pair">
+            <div class="slot" id="slot-9"><div class="slot-id tag-red">9</div><div class="product-icon" id="icon-9"></div><span class="team-name">Gmail</span></div>
+            <div class="slot" id="slot-10"><div class="slot-id tag-blue">10</div><div class="product-icon" id="icon-10"></div><span class="team-name">Google Calendar</span></div>
+          </div>
+          <div class="match-pair">
+            <div class="slot" id="slot-11"><div class="slot-id tag-green">11</div><div class="product-icon" id="icon-11"></div><span class="team-name">Google Meet</span></div>
+            <div class="slot" id="slot-12"><div class="slot-id tag-yellow">12</div><div class="product-icon" id="icon-12"></div><span class="team-name">Google Drive</span></div>
+          </div>
+          <div class="match-pair">
+            <div class="slot" id="slot-13"><div class="slot-id tag-green">13</div><div class="product-icon" id="icon-13"></div><span class="team-name">Android</span></div>
+            <div class="slot" id="slot-14"><div class="slot-id tag-blue">14</div><div class="product-icon" id="icon-14"></div><span class="team-name">Google Pixel</span></div>
+          </div>
+          <div class="match-pair">
+            <div class="slot" id="slot-15"><div class="slot-id tag-yellow">15</div><div class="product-icon" id="icon-15"></div><span class="team-name">Chromebook</span></div>
+            <div class="slot" id="slot-16"><div class="slot-id tag-blue">16</div><div class="product-icon" id="icon-16"></div><span class="team-name">Google Nest</span></div>
+          </div>
+        </div>
+
+        <div class="connector-col">
+          <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 22 660">
+            <path d="M 22 60 H 11 V 140 H 0 M 22 140 H 11"/><path d="M 22 225 H 11 V 305 H 0 M 22 305 H 11"/>
+            <path d="M 22 390 H 11 V 470 H 0 M 22 470 H 11"/><path d="M 22 555 H 11 V 635 H 0 M 22 635 H 11"/>
+          </svg>
+        </div>
+
+        <div class="round-col">
+          <div class="match-pair">
+            <div class="slot" id="slot-R-QF-1"><div class="slot-id tag-neutral">QF5</div><div class="product-icon"></div><span class="team-name">---</span></div>
+            <div class="slot" id="slot-R-QF-2"><div class="slot-id tag-neutral">QF6</div><div class="product-icon"></div><span class="team-name">---</span></div>
+          </div>
+          <div class="match-pair">
+            <div class="slot" id="slot-R-QF-3"><div class="slot-id tag-neutral">QF7</div><div class="product-icon"></div><span class="team-name">---</span></div>
+            <div class="slot" id="slot-R-QF-4"><div class="slot-id tag-neutral">QF8</div><div class="product-icon"></div><span class="team-name">---</span></div>
+          </div>
+        </div>
+
+        <div class="connector-col">
+          <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 22 660">
+            <path d="M 22 140 H 11 V 330 H 0 M 22 520 H 11 V 330"/>
+          </svg>
+        </div>
+
+        <div class="round-col">
+          <div class="match-pair">
+            <div class="slot" id="slot-R-SF-1"><div class="slot-id tag-neutral">SF3</div><div class="product-icon"></div><span class="team-name">---</span></div>
+            <div class="slot" id="slot-R-SF-2"><div class="slot-id tag-neutral">SF4</div><div class="product-icon"></div><span class="team-name">---</span></div>
+          </div>
+        </div>
+
+        <div class="connector-col">
+          <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 22 660"><path d="M 22 330 H 0"/></svg>
+        </div>
       </div>
     </div>
   </div>
-
-  <div class="live-indicator"><div class="dot"></div> GDGoC PolyU LIVE CONNECTED</div>
 
   <!-- FULLSCREEN WINNER REVEAL STAGE -->
   <div class="winner-overlay" id="winnerOverlay">
@@ -452,7 +507,29 @@
     let audioReady = false;
     let currentChampionData = null;
 
-    // HIGH QUALITY VECTOR ICONS FOR ALL 16 GOOGLE PRODUCTS
+    // RESPONSIVE SCALER ENGINE (Fits laptop, tablet, mobile perfectly)
+    function autoScaleViewport() {
+      const stage = document.getElementById('stage-scaler');
+      if (!stage) return;
+      
+      const targetWidth = 1480;
+      const targetHeight = 820;
+      const windowWidth = window.innerWidth;
+      const windowHeight = window.innerHeight;
+
+      // Scale to fit available viewport with padding
+      const scaleX = (windowWidth - 24) / targetWidth;
+      const scaleY = (windowHeight - 24) / targetHeight;
+      const scale = Math.min(scaleX, scaleY, 1.15);
+
+      stage.style.transform = `scale(${Math.max(scale, 0.35)})`;
+    }
+
+    window.addEventListener('resize', autoScaleViewport);
+    window.addEventListener('orientationchange', autoScaleViewport);
+    document.addEventListener('DOMContentLoaded', autoScaleViewport);
+
+    // GOOGLE PRODUCT ICONS (16 PRODUCTS)
     const PRODUCT_LOGOS = {
       1: `<svg viewBox="0 0 24 24"><path fill="#4285F4" d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>`, // Docs
       2: `<svg viewBox="0 0 24 24"><path fill="#0F9D58" d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 16H8v-2h5v2zm0-3H8v-2h5v2zm0-3H8v-2h5v2zm5 6h-3v-2h3v2zm0-3h-3v-2h3v2zm-4-5V3.5L18.5 9H13z"/></svg>`, // Sheets
@@ -538,7 +615,6 @@
         const champBtn = document.getElementById('slot-CHAMPION');
         if (champBtn) champBtn.innerText = `👑 WINNER: #${data.teamNum} ${data.teamName}`;
         
-        // Shoot big confetti & show winner screen
         confetti({ particleCount: 250, spread: 120, origin: { y: 0.5 } });
         playFanfare();
         setTimeout(showWinnerScreen, 800);
