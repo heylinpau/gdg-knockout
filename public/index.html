@@ -61,8 +61,8 @@
       padding: 8px 10px; display: flex; align-items: center; gap: 8px; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
     .slot.highlight {
-      border-color: var(--neon-lime); background: rgba(184, 255, 2, 0.15); transform: scale(1.05);
-      box-shadow: 0 0 15px rgba(184, 255, 2, 0.4);
+      border-color: var(--neon-lime) !important; background: rgba(184, 255, 2, 0.18) !important; transform: scale(1.08);
+      box-shadow: 0 0 20px rgba(184, 255, 2, 0.6);
     }
     .slot-id { width: 22px; height: 22px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 800; flex-shrink: 0; }
     .tag-blue { background: var(--g-blue); color: #fff; }
@@ -87,7 +87,7 @@
     @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
   </style>
 </head>
-<body>
+<body onclick="enableAudio()">
 
   <div class="side-pill pill-left-1"></div><div class="side-pill pill-left-2"></div>
   <div class="side-pill pill-left-3"></div><div class="side-pill pill-left-4"></div>
@@ -104,20 +104,20 @@
     <div class="bracket-half left">
       <div class="round-col">
         <div class="match-pair">
-          <div class="slot" id="slot-1"><div class="slot-id tag-blue">1</div><span class="team-name">Team 1</span></div>
-          <div class="slot" id="slot-2"><div class="slot-id tag-blue">2</div><span class="team-name">Team 2</span></div>
+          <div class="slot" id="slot-1"><div class="slot-id tag-blue">1</div><span class="team-name">Team Alpha</span></div>
+          <div class="slot" id="slot-2"><div class="slot-id tag-blue">2</div><span class="team-name">Team Pixel</span></div>
         </div>
         <div class="match-pair">
-          <div class="slot" id="slot-3"><div class="slot-id tag-red">3</div><span class="team-name">Team 3</span></div>
-          <div class="slot" id="slot-4"><div class="slot-id tag-red">4</div><span class="team-name">Team 4</span></div>
+          <div class="slot" id="slot-3"><div class="slot-id tag-red">3</div><span class="team-name">Team Sketch</span></div>
+          <div class="slot" id="slot-4"><div class="slot-id tag-red">4</div><span class="team-name">Team Brush</span></div>
         </div>
         <div class="match-pair">
-          <div class="slot" id="slot-5"><div class="slot-id tag-yellow">5</div><span class="team-name">Team 5</span></div>
-          <div class="slot" id="slot-6"><div class="slot-id tag-yellow">6</div><span class="team-name">Team 6</span></div>
+          <div class="slot" id="slot-5"><div class="slot-id tag-yellow">5</div><span class="team-name">Team Vector</span></div>
+          <div class="slot" id="slot-6"><div class="slot-id tag-yellow">6</div><span class="team-name">Team Canvas</span></div>
         </div>
         <div class="match-pair">
-          <div class="slot" id="slot-7"><div class="slot-id tag-green">7</div><span class="team-name">Team 7</span></div>
-          <div class="slot" id="slot-8"><div class="slot-id tag-green">8</div><span class="team-name">Team 8</span></div>
+          <div class="slot" id="slot-7"><div class="slot-id tag-green">7</div><span class="team-name">Team Doodle</span></div>
+          <div class="slot" id="slot-8"><div class="slot-id tag-green">8</div><span class="team-name">Team Ink</span></div>
         </div>
       </div>
 
@@ -177,20 +177,20 @@
     <div class="bracket-half right">
       <div class="round-col">
         <div class="match-pair">
-          <div class="slot" id="slot-9"><div class="slot-id tag-blue">9</div><span class="team-name">Team 9</span></div>
-          <div class="slot" id="slot-10"><div class="slot-id tag-blue">10</div><span class="team-name">Team 10</span></div>
+          <div class="slot" id="slot-9"><div class="slot-id tag-blue">9</div><span class="team-name">Team Palette</span></div>
+          <div class="slot" id="slot-10"><div class="slot-id tag-blue">10</div><span class="team-name">Team Render</span></div>
         </div>
         <div class="match-pair">
-          <div class="slot" id="slot-11"><div class="slot-id tag-red">11</div><span class="team-name">Team 11</span></div>
-          <div class="slot" id="slot-12"><div class="slot-id tag-red">12</div><span class="team-name">Team 12</span></div>
+          <div class="slot" id="slot-11"><div class="slot-id tag-red">11</div><span class="team-name">Team Shade</span></div>
+          <div class="slot" id="slot-12"><div class="slot-id tag-red">12</div><span class="team-name">Team Layer</span></div>
         </div>
         <div class="match-pair">
-          <div class="slot" id="slot-13"><div class="slot-id tag-yellow">13</div><span class="team-name">Team 13</span></div>
-          <div class="slot" id="slot-14"><div class="slot-id tag-yellow">14</div><span class="team-name">Team 14</span></div>
+          <div class="slot" id="slot-13"><div class="slot-id tag-yellow">13</div><span class="team-name">Team Curve</span></div>
+          <div class="slot" id="slot-14"><div class="slot-id tag-yellow">14</div><span class="team-name">Team Stroke</span></div>
         </div>
         <div class="match-pair">
-          <div class="slot" id="slot-15"><div class="slot-id tag-green">15</div><span class="team-name">Team 15</span></div>
-          <div class="slot" id="slot-16"><div class="slot-id tag-green">16</div><span class="team-name">Team 16</span></div>
+          <div class="slot" id="slot-15"><div class="slot-id tag-green">15</div><span class="team-name">Team Trace</span></div>
+          <div class="slot" id="slot-16"><div class="slot-id tag-green">16</div><span class="team-name">Team Grid</span></div>
         </div>
       </div>
 
@@ -231,72 +231,86 @@
     </div>
   </div>
 
-  <div class="live-indicator"><div class="dot"></div> LIVE SYNCED WITH STAGE CONTROLLER</div>
+  <div class="live-indicator"><div class="dot"></div> REAL-TIME LIVE CONNECTED</div>
 
   <script>
-    let lastStateTimestamp = 0;
+    const TOPIC = 'gdghk-bracket-channel-2026';
+    let audioReady = false;
 
-    // Web Audio Synthesized Victory FX (No external audio files needed!)
-    function playVictoryFanfare() {
+    function enableAudio() {
+      audioReady = true;
+    }
+
+    function playFanfare() {
+      if (!audioReady) return;
       try {
         const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const notes = [261.63, 329.63, 392.00, 523.25]; // C E G C
+        const notes = [261.63, 329.63, 392.00, 523.25];
         notes.forEach((freq, i) => {
           const osc = ctx.createOscillator();
           const gain = ctx.createGain();
           osc.type = "triangle";
-          osc.frequency.setValueAtTime(freq, ctx.currentTime + i * 0.1);
-          gain.gain.setValueAtTime(0.2, ctx.currentTime + i * 0.1);
-          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.1 + 0.4);
+          osc.frequency.setValueAtTime(freq, ctx.currentTime + i * 0.08);
+          gain.gain.setValueAtTime(0.25, ctx.currentTime + i * 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.08 + 0.35);
           osc.connect(gain);
           gain.connect(ctx.destination);
-          osc.start(ctx.currentTime + i * 0.1);
-          osc.stop(ctx.currentTime + i * 0.1 + 0.45);
+          osc.start(ctx.currentTime + i * 0.08);
+          osc.stop(ctx.currentTime + i * 0.08 + 0.4);
         });
       } catch (e) {}
     }
 
-    async function pollState() {
-      try {
-        const res = await fetch('/api/state');
-        const data = await res.json();
-
-        // Render R1 teams
-        if (data.teams) {
-          for (let i = 1; i <= 16; i++) {
-            const el = document.querySelector(`#slot-${i} .team-name`);
-            if (el && data.teams[i]) el.innerText = data.teams[i];
-          }
+    function handleAction(data) {
+      if (data.type === 'ADVANCE') {
+        const slotEl = document.getElementById(`slot-${data.targetSlot}`);
+        if (slotEl) {
+          const nameEl = slotEl.querySelector('.team-name');
+          if (nameEl) nameEl.innerText = data.winnerName;
+          slotEl.classList.add('highlight');
+          setTimeout(() => slotEl.classList.remove('highlight'), 2000);
+          confetti({ particleCount: 70, spread: 60, origin: { y: 0.6 } });
+          playFanfare();
         }
-
-        // Check if there's a new update
-        if (data.lastUpdated && data.lastUpdated > lastStateTimestamp) {
-          if (lastStateTimestamp !== 0) {
-            playVictoryFanfare();
-            confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
-          }
-          lastStateTimestamp = data.lastUpdated;
-        }
-
-        // Render advanced matches
-        if (data.matches) {
-          for (const [slotId, name] of Object.entries(data.matches)) {
-            const slotEl = document.getElementById(`slot-${slotId}`);
-            if (slotEl) {
-              if (slotId === 'CHAMPION') {
-                slotEl.innerText = `👑 WINNER: ${name}`;
-              } else {
-                const nameEl = slotEl.querySelector('.team-name');
-                if (nameEl) nameEl.innerText = name;
-              }
-            }
-          }
-        }
-      } catch (err) {}
+      } 
+      else if (data.type === 'CHAMPION') {
+        const champEl = document.getElementById('slot-CHAMPION');
+        if (champEl) champEl.innerText = `👑 WINNER: ${data.winnerName}`;
+        confetti({ particleCount: 200, spread: 100, origin: { y: 0.5 } });
+        playFanfare();
+      }
+      else if (data.type === 'RESET') {
+        const resetIds = ['L-QF-1','L-QF-2','L-QF-3','L-QF-4','R-QF-1','R-QF-2','R-QF-3','R-QF-4','L-SF-1','L-SF-2','R-SF-1','R-SF-2','F-1','F-2'];
+        resetIds.forEach(id => {
+          const el = document.getElementById(`slot-${id}`);
+          if (el) el.querySelector('.team-name').innerText = id.startsWith('F-') ? 'TBD' : '---';
+        });
+        document.getElementById('slot-CHAMPION').innerText = '👑 WINNER: TBD';
+      }
     }
 
-    setInterval(pollState, 1000);
-    pollState();
+    // Connect to Real-time Stream
+    const eventSource = new EventSource(`https://ntfy.sh/${TOPIC}/sse`);
+    eventSource.onmessage = (event) => {
+      try {
+        const msg = JSON.parse(event.data);
+        const data = JSON.parse(msg.message);
+        handleAction(data);
+      } catch (e) {}
+    };
+
+    // Load recent history upon opening
+    fetch(`https://ntfy.sh/${TOPIC}/json?poll=1&since=8h`)
+      .then(r => r.text())
+      .then(text => {
+        text.trim().split('\n').forEach(line => {
+          try {
+            const msg = JSON.parse(line);
+            const data = JSON.parse(msg.message);
+            handleAction(data);
+          } catch (e) {}
+        });
+      });
   </script>
 </body>
 </html>
