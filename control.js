@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * GDG Hong Kong - Smart Auto-Advancing Bracket Commander
+ * GDGoC PolyU - Google Products Tournament Commander
  */
 
 const https = require('https');
@@ -9,22 +9,22 @@ const https = require('https');
 const TOPIC = 'gdghk-bracket-channel-2026';
 
 const TEAMS = {
-  1:  { name: 'Team Alpha',  color: 'tag-blue',   qf: 'L-QF-1', sf: 'L-SF-1', final: 'F-1' },
-  2:  { name: 'Team Pixel',  color: 'tag-blue',   qf: 'L-QF-1', sf: 'L-SF-1', final: 'F-1' },
-  3:  { name: 'Team Sketch', color: 'tag-red',    qf: 'L-QF-2', sf: 'L-SF-1', final: 'F-1' },
-  4:  { name: 'Team Brush',  color: 'tag-red',    qf: 'L-QF-2', sf: 'L-SF-1', final: 'F-1' },
-  5:  { name: 'Team Vector', color: 'tag-yellow', qf: 'L-QF-3', sf: 'L-SF-2', final: 'F-1' },
-  6:  { name: 'Team Canvas', color: 'tag-yellow', qf: 'L-QF-3', sf: 'L-SF-2', final: 'F-1' },
-  7:  { name: 'Team Doodle', color: 'tag-green',  qf: 'L-QF-4', sf: 'L-SF-2', final: 'F-1' },
-  8:  { name: 'Team Ink',    color: 'tag-green',  qf: 'L-QF-4', sf: 'L-SF-2', final: 'F-1' },
-  9:  { name: 'Team Palette',color: 'tag-blue',   qf: 'R-QF-1', sf: 'R-SF-1', final: 'F-2' },
-  10: { name: 'Team Render', color: 'tag-blue',   qf: 'R-QF-1', sf: 'R-SF-1', final: 'F-2' },
-  11: { name: 'Team Shade',  color: 'tag-red',    qf: 'R-QF-2', sf: 'R-SF-1', final: 'F-2' },
-  12: { name: 'Team Layer',  color: 'tag-red',    qf: 'R-QF-2', sf: 'R-SF-1', final: 'F-2' },
-  13: { name: 'Team Curve',  color: 'tag-yellow', qf: 'R-QF-3', sf: 'R-SF-2', final: 'F-2' },
-  14: { name: 'Team Stroke', color: 'tag-yellow', qf: 'R-QF-3', sf: 'R-SF-2', final: 'F-2' },
-  15: { name: 'Team Trace',  color: 'tag-green',  qf: 'R-QF-4', sf: 'R-SF-2', final: 'F-2' },
-  16: { name: 'Team Grid',   color: 'tag-green',  qf: 'R-QF-4', sf: 'R-SF-2', final: 'F-2' },
+  1:  { name: 'Google Docs',     category: 'Document & Productivity Tools', color: 'tag-blue',   qf: 'L-QF-1', sf: 'L-SF-1', final: 'F-1' },
+  2:  { name: 'Google Sheets',   category: 'Document & Productivity Tools', color: 'tag-green',  qf: 'L-QF-1', sf: 'L-SF-1', final: 'F-1' },
+  3:  { name: 'Google Slides',   category: 'Document & Productivity Tools', color: 'tag-yellow', qf: 'L-QF-2', sf: 'L-SF-1', final: 'F-1' },
+  4:  { name: 'Google Forms',    category: 'Document & Productivity Tools', color: 'tag-purple', qf: 'L-QF-2', sf: 'L-SF-1', final: 'F-1' },
+  5:  { name: 'YouTube',         category: 'Media & Entertainment',         color: 'tag-red',    qf: 'L-QF-3', sf: 'L-SF-2', final: 'F-1' },
+  6:  { name: 'Google TV',       category: 'Media & Entertainment',         color: 'tag-blue',   qf: 'L-QF-3', sf: 'L-SF-2', final: 'F-1' },
+  7:  { name: 'Google Podcasts', category: 'Media & Entertainment',         color: 'tag-yellow', qf: 'L-QF-4', sf: 'L-SF-2', final: 'F-1' },
+  8:  { name: 'Google Books',    category: 'Media & Entertainment',         color: 'tag-blue',   qf: 'L-QF-4', sf: 'L-SF-2', final: 'F-1' },
+  9:  { name: 'Gmail',           category: 'Communication & Organization',  color: 'tag-red',    qf: 'R-QF-1', sf: 'R-SF-1', final: 'F-2' },
+  10: { name: 'Google Calendar', category: 'Communication & Organization',  color: 'tag-blue',   qf: 'R-QF-1', sf: 'R-SF-1', final: 'F-2' },
+  11: { name: 'Google Meet',     category: 'Communication & Organization',  color: 'tag-green',  qf: 'R-QF-2', sf: 'R-SF-1', final: 'F-2' },
+  12: { name: 'Google Drive',    category: 'Communication & Organization',  color: 'tag-yellow', qf: 'R-QF-2', sf: 'R-SF-1', final: 'F-2' },
+  13: { name: 'Android',         category: 'Hardware & Operating Systems',  color: 'tag-green',  qf: 'R-QF-3', sf: 'R-SF-2', final: 'F-2' },
+  14: { name: 'Google Pixel',    category: 'Hardware & Operating Systems',  color: 'tag-blue',   qf: 'R-QF-3', sf: 'R-SF-2', final: 'F-2' },
+  15: { name: 'Chromebook',      category: 'Hardware & Operating Systems',  color: 'tag-yellow', qf: 'R-QF-4', sf: 'R-SF-2', final: 'F-2' },
+  16: { name: 'Google Nest',     category: 'Hardware & Operating Systems',  color: 'tag-blue',   qf: 'R-QF-4', sf: 'R-SF-2', final: 'F-2' },
 };
 
 const args = process.argv.slice(2);
@@ -41,7 +41,7 @@ function broadcast(payload) {
     headers: { 'Content-Type': 'text/plain', 'Content-Length': Buffer.byteLength(data) }
   };
   const req = https.request(options, () => {
-    console.log(`\x1b[32m✔ [SUCCESS]\x1b[0m Screen updated in real-time!`);
+    console.log(`\x1b[32m✔ [GDGoC PolyU SYNC]\x1b[0m Stage screen updated in real-time!`);
   });
   req.on('error', (e) => console.error(`✖ Error: ${e.message}`));
   req.write(data);
@@ -74,13 +74,12 @@ async function getTeamCurrentRound(teamNum) {
 
 function findTeamNum(query) {
   if (!query) return null;
-  // Direct number 1-16
   if (!isNaN(query) && TEAMS[Number(query)]) return Number(query);
   
-  // Name match
   for (const [id, team] of Object.entries(TEAMS)) {
     const cleanName = team.name.toLowerCase();
-    if (cleanName.includes(query) || query.includes(cleanName.replace('team ', ''))) {
+    const shortName = cleanName.replace('google ', '');
+    if (cleanName.includes(query) || shortName.includes(query) || query.includes(shortName)) {
       return Number(id);
     }
   }
@@ -90,22 +89,22 @@ function findTeamNum(query) {
 async function run() {
   if (!command || command === 'help') {
     console.log(`
-\x1b[36mGDG Smart Auto-Bracket Commander\x1b[0m
-  node control.js advance <name or number>  -> Moves team to next round automatically!
-  node control.js reset                    -> Resets tournament
+\x1b[36mGDGoC PolyU - Google Tournament Commander\x1b[0m
+  node control.js advance <product name or #>  -> Automatically advances team to next round
+  node control.js reset                        -> Resets whole tournament
 
 \x1b[33mExamples:\x1b[0m
-  node control.js advance alpha    (Moves Alpha to Quarter-Finals)
-  node control.js advance alpha    (Moves Alpha to Semi-Finals)
-  node control.js advance alpha    (Moves Alpha to Grand Final)
-  node control.js advance alpha    (👑 Crowns Alpha Champion!)
-  node control.js advance 4        (Moves Team 4)
+  node control.js advance docs       (Advances Google Docs)
+  node control.js advance slides     (Advances Google Slides)
+  node control.js advance youtube    (Advances YouTube)
+  node control.js advance meet       (Advances Google Meet)
+  node control.js advance 10         (Advances Team 10 - Calendar)
     `);
     process.exit(0);
   }
 
   if (command === 'reset') {
-    console.log(`🔄 Resetting tournament...`);
+    console.log(`🔄 Resetting tournament bracket...`);
     broadcast({ type: 'RESET' });
     return;
   }
@@ -113,7 +112,7 @@ async function run() {
   if (['advance', 'move', 'win'].includes(command)) {
     const teamNum = findTeamNum(targetInput);
     if (!teamNum) {
-      console.log(`\x1b[31m✖ Team not found:\x1b[0m "${targetInput}". Try a number 1-16 or name (e.g. alpha, pixel, sketch).`);
+      console.log(`\x1b[31m✖ Team not found:\x1b[0m "${targetInput}". Try: docs, sheets, slides, youtube, meet, pixel, etc.`);
       process.exit(1);
     }
 
@@ -121,8 +120,7 @@ async function run() {
     const currentWins = await getTeamCurrentRound(teamNum);
 
     if (currentWins === 0) {
-      // Round of 16 -> Quarter-Finals
-      console.log(`🏆 Advancing [#${teamNum} ${team.name}] to QUARTER-FINALS (${team.qf})...`);
+      console.log(`🏆 Advancing [#${teamNum} ${team.name}] to QUARTER-FINALS...`);
       broadcast({
         type: 'ADVANCE_SLOT',
         teamNum,
@@ -132,8 +130,7 @@ async function run() {
       });
     } 
     else if (currentWins === 1) {
-      // Quarter-Finals -> Semi-Finals
-      console.log(`🏆 Advancing [#${teamNum} ${team.name}] to SEMI-FINALS (${team.sf})...`);
+      console.log(`🏆 Advancing [#${teamNum} ${team.name}] to SEMI-FINALS...`);
       broadcast({
         type: 'ADVANCE_SLOT',
         teamNum,
@@ -143,8 +140,7 @@ async function run() {
       });
     } 
     else if (currentWins === 2) {
-      // Semi-Finals -> Grand Final
-      console.log(`🔥 [#${teamNum} ${team.name}] enters the GRAND FINAL (${team.final})!`);
+      console.log(`🔥 [#${teamNum} ${team.name}] enters the GRAND FINAL!`);
       broadcast({
         type: 'ADVANCE_SLOT',
         teamNum,
@@ -154,13 +150,13 @@ async function run() {
       });
     } 
     else if (currentWins === 3) {
-      // Grand Final -> Champion
-      console.log(`👑 CROWNING CHAMPION: [#${teamNum} ${team.name}]!`);
+      console.log(`👑 CROWNING GRAND CHAMPION: [#${teamNum} ${team.name}]!`);
       broadcast({
         type: 'CHAMPION',
         teamNum,
         teamName: team.name,
-        tagClass: team.color
+        tagClass: team.color,
+        category: team.category
       });
     } 
     else {

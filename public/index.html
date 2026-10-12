@@ -2,128 +2,330 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>GDG HK - Drawing Game Knockout Bracket</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,700;0,900;1,900&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <title>GDGoC PolyU - Google Drawing Game Knockout</title>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700;900&family=Outfit:wght@400;600;700;800;900&family=Montserrat:ital,wght@0,800;0,900;1,900&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
     :root {
-      --bg: #090b0e;
-      --card-bg: #141821;
-      --card-border: #283042;
+      --bg: #080a0f;
+      --card-bg: rgba(20, 24, 33, 0.85);
+      --card-border: #242c3d;
       --neon-lime: #b8ff02;
       --g-blue: #4285F4;
       --g-red: #EA4335;
       --g-yellow: #FBBC05;
       --g-green: #34A853;
-      --line: #2d3748;
+      --line: #222a3a;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       background: var(--bg);
-      background-image: radial-gradient(circle at 50% 15%, rgba(66, 133, 244, 0.12) 0%, transparent 50%),
-                        radial-gradient(circle at 50% 85%, rgba(184, 255, 2, 0.05) 0%, transparent 60%);
+      background-image: 
+        radial-gradient(circle at 50% 10%, rgba(66, 133, 244, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 10% 90%, rgba(234, 67, 53, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 90% 90%, rgba(52, 168, 83, 0.08) 0%, transparent 40%);
       color: #fff;
-      font-family: 'Outfit', sans-serif;
+      font-family: 'Google Sans', 'Outfit', sans-serif;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 16px 20px;
+      padding: 14px 20px;
       overflow-x: auto;
     }
-    .side-pill { position: fixed; width: 14px; border-radius: 20px; z-index: 1; opacity: 0.85; }
-    .pill-left-1 { top: 12%; left: 14px; height: 110px; background: var(--g-red); }
-    .pill-left-2 { top: 32%; left: 14px; height: 70px; background: var(--g-yellow); }
-    .pill-left-3 { top: 48%; left: 14px; height: 140px; background: var(--g-blue); }
-    .pill-left-4 { top: 72%; left: 14px; height: 90px; background: var(--neon-lime); }
-    .pill-right-1 { top: 15%; right: 14px; height: 130px; background: var(--neon-lime); }
-    .pill-right-2 { top: 38%; right: 14px; height: 80px; background: var(--g-blue); }
-    .pill-right-3 { top: 54%; right: 14px; height: 110px; background: var(--g-red); }
-    .pill-right-4 { top: 76%; right: 14px; height: 60px; background: var(--g-yellow); }
 
-    .header { text-align: center; margin-bottom: 20px; }
-    .sub-head { font-family: 'Montserrat', sans-serif; font-size: 0.8rem; letter-spacing: 4px; font-weight: 800; color: #9aa0a6; }
-    .title {
-      font-family: 'Montserrat', sans-serif; font-style: italic; font-size: 2.7rem; font-weight: 900;
-      color: var(--neon-lime); text-shadow: 0 0 25px rgba(184, 255, 2, 0.4); margin-top: 4px;
+    /* DECORATIVE SIDE PILLS */
+    .side-pill { position: fixed; width: 12px; border-radius: 20px; z-index: 1; opacity: 0.85; }
+    .pill-left-1 { top: 12%; left: 12px; height: 110px; background: var(--g-red); }
+    .pill-left-2 { top: 32%; left: 12px; height: 70px; background: var(--g-yellow); }
+    .pill-left-3 { top: 48%; left: 12px; height: 140px; background: var(--g-blue); }
+    .pill-left-4 { top: 72%; left: 12px; height: 90px; background: var(--neon-lime); }
+    .pill-right-1 { top: 15%; right: 12px; height: 130px; background: var(--neon-lime); }
+    .pill-right-2 { top: 38%; right: 12px; height: 80px; background: var(--g-blue); }
+    .pill-right-3 { top: 54%; right: 12px; height: 110px; background: var(--g-red); }
+    .pill-right-4 { top: 76%; right: 12px; height: 60px; background: var(--g-yellow); }
+
+    /* GDG LOGO & HEADER */
+    .header { text-align: center; margin-bottom: 12px; z-index: 2; display: flex; flex-direction: column; align-items: center; }
+    .gdg-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 4px;
+    }
+    .gdg-svg-logo { width: 44px; height: 26px; }
+    .gdg-title-text {
+      font-family: 'Google Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #e8eaed;
+    }
+    .gdg-title-text span.polyu {
+      color: var(--neon-lime);
+      background: rgba(184, 255, 2, 0.12);
+      padding: 2px 8px;
+      border-radius: 6px;
+      border: 1px solid rgba(184, 255, 2, 0.3);
+      margin-left: 6px;
+    }
+    .tournament-title {
+      font-family: 'Montserrat', sans-serif;
+      font-style: italic;
+      font-size: 2.5rem;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--neon-lime);
+      text-shadow: 0 0 25px rgba(184, 255, 2, 0.4);
+      line-height: 1.1;
     }
 
-    .bracket-container { display: flex; align-items: center; justify-content: center; width: 100%; max-width: 1420px; }
+    /* BRACKET LAYOUT */
+    .bracket-container { display: flex; align-items: center; justify-content: center; width: 100%; max-width: 1480px; z-index: 2; }
     .bracket-half { display: flex; flex: 1; align-items: center; }
     .bracket-half.left { justify-content: flex-start; }
     .bracket-half.right { justify-content: flex-end; flex-direction: row-reverse; }
 
-    .round-col { display: flex; flex-direction: column; justify-content: space-around; height: 680px; width: 155px; }
+    .round-col { display: flex; flex-direction: column; justify-content: space-around; height: 690px; width: 165px; }
     .match-pair { display: flex; flex-direction: column; gap: 6px; }
 
+    /* SLOT CARDS */
     .slot {
-      background: var(--card-bg); border: 1.5px solid var(--card-border); border-radius: 8px;
-      padding: 8px 10px; display: flex; align-items: center; gap: 8px; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      background: var(--card-bg);
+      border: 1.5px solid var(--card-border);
+      border-radius: 10px;
+      padding: 7px 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      backdrop-filter: blur(6px);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
     .slot.highlight {
-      border-color: var(--neon-lime) !important; background: rgba(184, 255, 2, 0.18) !important; transform: scale(1.08);
-      box-shadow: 0 0 20px rgba(184, 255, 2, 0.6);
+      border-color: var(--neon-lime) !important;
+      background: rgba(184, 255, 2, 0.18) !important;
+      transform: scale(1.06);
+      box-shadow: 0 0 20px rgba(184, 255, 2, 0.5);
     }
-    .slot-id { width: 22px; height: 22px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 800; flex-shrink: 0; }
+
+    .slot-id {
+      width: 22px;
+      height: 22px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
     .tag-blue { background: var(--g-blue); color: #fff; }
     .tag-red { background: var(--g-red); color: #fff; }
     .tag-yellow { background: var(--g-yellow); color: #000; }
     .tag-green { background: var(--g-green); color: #fff; }
-    .tag-neutral { background: #283042; color: #7a869a; }
+    .tag-purple { background: #9334E6; color: #fff; }
+    .tag-neutral { background: #232b3b; color: #7a869a; }
 
-    .team-name { font-size: 0.82rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; }
+    .product-icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .product-icon svg { width: 100%; height: 100%; }
 
-    .connector-col { width: 28px; height: 680px; flex-shrink: 0; }
+    .team-name {
+      font-size: 0.82rem;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 1;
+    }
+
+    /* CONNECTOR LINES */
+    .connector-col { width: 26px; height: 690px; flex-shrink: 0; }
     .connector-svg { width: 100%; height: 100%; stroke: var(--line); stroke-width: 2; fill: none; }
 
-    .center-podium { width: 260px; margin: 0 16px; display: flex; flex-direction: column; align-items: center; text-align: center; }
-    .trophy-graphic { font-size: 4.8rem; filter: drop-shadow(0 4px 15px rgba(251, 188, 5, 0.5)); animation: float 3s ease-in-out infinite; }
-    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    /* CENTER TROPHY & GRAND FINAL */
+    .center-podium { width: 270px; margin: 0 14px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+    .trophy-graphic { font-size: 4.6rem; filter: drop-shadow(0 4px 18px rgba(251, 188, 5, 0.55)); animation: float 3s ease-in-out infinite; }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
 
-    .grand-final-box { margin-top: 14px; width: 100%; background: #10141d; border: 2px solid var(--neon-lime); border-radius: 12px; padding: 12px; }
-    .champion-winner { margin-top: 10px; background: #181f2c; border: 1.5px dashed var(--g-yellow); border-radius: 8px; padding: 8px; font-size: 0.95rem; font-weight: 800; color: var(--g-yellow); }
+    .grand-final-box {
+      margin-top: 10px;
+      width: 100%;
+      background: #11151f;
+      border: 2px solid var(--neon-lime);
+      box-shadow: 0 0 25px rgba(184, 255, 2, 0.2);
+      border-radius: 12px;
+      padding: 12px;
+    }
+    .final-badge { font-family: 'Montserrat'; font-size: 0.78rem; font-weight: 900; color: var(--neon-lime); letter-spacing: 2px; margin-bottom: 8px; }
+    
+    .champion-preview-btn {
+      margin-top: 10px;
+      background: linear-gradient(135deg, #1f2738 0%, #11151f 100%);
+      border: 1.5px dashed var(--g-yellow);
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: var(--g-yellow);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .champion-preview-btn:hover { background: rgba(251, 188, 5, 0.15); transform: scale(1.02); }
 
-    .live-indicator { margin-top: 18px; font-size: 0.75rem; letter-spacing: 2px; color: #7a869a; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+    /* FULLSCREEN WINNER OVERLAY (THE WOW REVEAL SCREEN) */
+    .winner-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: radial-gradient(circle at center, #141b2a 0%, #06080c 100%);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+      transform: scale(0.9);
+    }
+    .winner-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1);
+    }
+
+    .winner-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      max-width: 650px;
+      padding: 30px;
+      position: relative;
+    }
+    .winner-tag {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 900;
+      letter-spacing: 4px;
+      color: var(--neon-lime);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      text-shadow: 0 0 15px rgba(184, 255, 2, 0.6);
+    }
+    .winner-logo-box {
+      width: 130px;
+      height: 130px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      border-radius: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 15px 0 20px;
+      box-shadow: 0 0 50px rgba(66, 133, 244, 0.35);
+      animation: pulseLogo 2s infinite ease-in-out;
+    }
+    .winner-logo-box svg { width: 75px; height: 75px; }
+    @keyframes pulseLogo {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 40px rgba(251, 188, 5, 0.3); }
+      50% { transform: scale(1.08); box-shadow: 0 0 70px rgba(184, 255, 2, 0.6); }
+    }
+
+    .winner-team-title {
+      font-family: 'Google Sans', sans-serif;
+      font-size: 3.2rem;
+      font-weight: 900;
+      color: #ffffff;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+    .winner-category {
+      font-size: 1.1rem;
+      color: #9aa0a6;
+      font-weight: 500;
+      letter-spacing: 1px;
+    }
+
+    .close-overlay-btn {
+      margin-top: 30px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      padding: 10px 24px;
+      border-radius: 20px;
+      font-family: 'Google Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .close-overlay-btn:hover { background: var(--neon-lime); color: #000; }
+
+    .live-indicator { margin-top: 14px; font-size: 0.75rem; letter-spacing: 2px; color: #7a869a; font-weight: 700; display: flex; align-items: center; gap: 8px; }
     .dot { width: 8px; height: 8px; background: var(--neon-lime); border-radius: 50%; box-shadow: 0 0 8px var(--neon-lime); animation: pulse 1.5s infinite; }
     @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
   </style>
 </head>
 <body onclick="enableAudio()">
 
+  <!-- SIDE ACCENTS -->
   <div class="side-pill pill-left-1"></div><div class="side-pill pill-left-2"></div>
   <div class="side-pill pill-left-3"></div><div class="side-pill pill-left-4"></div>
   <div class="side-pill pill-right-1"></div><div class="side-pill pill-right-2"></div>
   <div class="side-pill pill-right-3"></div><div class="side-pill pill-right-4"></div>
 
+  <!-- HEADER -->
   <div class="header">
-    <div class="sub-head"><span style="color:var(--g-blue)">GDG</span> <span style="color:var(--g-red)">HONG</span> <span style="color:var(--g-yellow)">KONG</span> • <span style="color:var(--g-green)">GOOGLE</span> MINGLE</div>
-    <div class="title">KNOCKOUT BRACKET</div>
+    <div class="gdg-brand">
+      <!-- EXACT GDG CHEVRON EMBEDDED LOGO -->
+      <svg class="gdg-svg-logo" viewBox="0 0 100 55">
+        <path d="M 30,12 L 14,28 A 6,6 0 0,0 14,36 L 30,52 A 6,6 0 0,0 38,44 L 26,32 L 38,20 A 6,6 0 0,0 30,12 Z" fill="#EA4335" />
+        <path d="M 22,20 L 10,32 A 6,6 0 0,0 10,40 L 22,52 A 6,6 0 0,0 30,44 L 18,32 L 30,20 A 6,6 0 0,0 22,20 Z" fill="#4285F4" />
+        <path d="M 70,12 L 86,28 A 6,6 0 0,1 86,36 L 70,52 A 6,6 0 0,1 62,44 L 74,32 L 62,20 A 6,6 0 0,1 70,12 Z" fill="#34A853" />
+        <path d="M 78,20 L 90,32 A 6,6 0 0,1 90,40 L 78,52 A 6,6 0 0,1 70,44 L 82,32 L 70,20 A 6,6 0 0,1 78,20 Z" fill="#FBBC05" />
+      </svg>
+      <div class="gdg-title-text">
+        Google Developer Groups on Campus <span class="polyu">PolyU</span>
+      </div>
+    </div>
+    <div class="tournament-title">DRAWING BATTLE KNOCKOUT</div>
   </div>
 
+  <!-- TOURNAMENT BRACKET -->
   <div class="bracket-container">
-    <!-- LEFT HALF -->
+    
+    <!-- LEFT HALF (TEAMS 1 TO 8) -->
     <div class="bracket-half left">
       <div class="round-col">
         <div class="match-pair">
-          <div class="slot" id="slot-1"><div class="slot-id tag-blue">1</div><span class="team-name">Team Alpha</span></div>
-          <div class="slot" id="slot-2"><div class="slot-id tag-blue">2</div><span class="team-name">Team Pixel</span></div>
+          <div class="slot" id="slot-1"><div class="slot-id tag-blue">1</div><div class="product-icon" id="icon-1"></div><span class="team-name">Google Docs</span></div>
+          <div class="slot" id="slot-2"><div class="slot-id tag-blue">2</div><div class="product-icon" id="icon-2"></div><span class="team-name">Google Sheets</span></div>
         </div>
         <div class="match-pair">
-          <div class="slot" id="slot-3"><div class="slot-id tag-red">3</div><span class="team-name">Team Sketch</span></div>
-          <div class="slot" id="slot-4"><div class="slot-id tag-red">4</div><span class="team-name">Team Brush</span></div>
+          <div class="slot" id="slot-3"><div class="slot-id tag-yellow">3</div><div class="product-icon" id="icon-3"></div><span class="team-name">Google Slides</span></div>
+          <div class="slot" id="slot-4"><div class="slot-id tag-purple">4</div><div class="product-icon" id="icon-4"></div><span class="team-name">Google Forms</span></div>
         </div>
         <div class="match-pair">
-          <div class="slot" id="slot-5"><div class="slot-id tag-yellow">5</div><span class="team-name">Team Vector</span></div>
-          <div class="slot" id="slot-6"><div class="slot-id tag-yellow">6</div><span class="team-name">Team Canvas</span></div>
+          <div class="slot" id="slot-5"><div class="slot-id tag-red">5</div><div class="product-icon" id="icon-5"></div><span class="team-name">YouTube</span></div>
+          <div class="slot" id="slot-6"><div class="slot-id tag-blue">6</div><div class="product-icon" id="icon-6"></div><span class="team-name">Google TV</span></div>
         </div>
         <div class="match-pair">
-          <div class="slot" id="slot-7"><div class="slot-id tag-green">7</div><span class="team-name">Team Doodle</span></div>
-          <div class="slot" id="slot-8"><div class="slot-id tag-green">8</div><span class="team-name">Team Ink</span></div>
+          <div class="slot" id="slot-7"><div class="slot-id tag-yellow">7</div><div class="product-icon" id="icon-7"></div><span class="team-name">Google Podcasts</span></div>
+          <div class="slot" id="slot-8"><div class="slot-id tag-blue">8</div><div class="product-icon" id="icon-8"></div><span class="team-name">Google Books</span></div>
         </div>
       </div>
 
       <div class="connector-col">
-        <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 28 680">
+        <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 28 690">
           <path d="M 0 65 H 14 V 145 H 28 M 0 145 H 14"/><path d="M 0 235 H 14 V 315 H 28 M 0 315 H 14"/>
           <path d="M 0 405 H 14 V 485 H 28 M 0 485 H 14"/><path d="M 0 575 H 14 V 655 H 28 M 0 655 H 14"/>
         </svg>
@@ -131,72 +333,72 @@
 
       <div class="round-col">
         <div class="match-pair">
-          <div class="slot" id="slot-L-QF-1"><div class="slot-id tag-neutral">QF1</div><span class="team-name">---</span></div>
-          <div class="slot" id="slot-L-QF-2"><div class="slot-id tag-neutral">QF2</div><span class="team-name">---</span></div>
+          <div class="slot" id="slot-L-QF-1"><div class="slot-id tag-neutral">QF1</div><div class="product-icon"></div><span class="team-name">---</span></div>
+          <div class="slot" id="slot-L-QF-2"><div class="slot-id tag-neutral">QF2</div><div class="product-icon"></div><span class="team-name">---</span></div>
         </div>
         <div class="match-pair">
-          <div class="slot" id="slot-L-QF-3"><div class="slot-id tag-neutral">QF3</div><span class="team-name">---</span></div>
-          <div class="slot" id="slot-L-QF-4"><div class="slot-id tag-neutral">QF4</div><span class="team-name">---</span></div>
+          <div class="slot" id="slot-L-QF-3"><div class="slot-id tag-neutral">QF3</div><div class="product-icon"></div><span class="team-name">---</span></div>
+          <div class="slot" id="slot-L-QF-4"><div class="slot-id tag-neutral">QF4</div><div class="product-icon"></div><span class="team-name">---</span></div>
         </div>
       </div>
 
       <div class="connector-col">
-        <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 28 680">
-          <path d="M 0 145 H 14 V 340 H 28 M 0 535 H 14 V 340"/>
+        <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 28 690">
+          <path d="M 0 145 H 14 V 345 H 28 M 0 545 H 14 V 345"/>
         </svg>
       </div>
 
       <div class="round-col">
         <div class="match-pair">
-          <div class="slot" id="slot-L-SF-1"><div class="slot-id tag-neutral">SF1</div><span class="team-name">---</span></div>
-          <div class="slot" id="slot-L-SF-2"><div class="slot-id tag-neutral">SF2</div><span class="team-name">---</span></div>
+          <div class="slot" id="slot-L-SF-1"><div class="slot-id tag-neutral">SF1</div><div class="product-icon"></div><span class="team-name">---</span></div>
+          <div class="slot" id="slot-L-SF-2"><div class="slot-id tag-neutral">SF2</div><div class="product-icon"></div><span class="team-name">---</span></div>
         </div>
       </div>
 
       <div class="connector-col">
-        <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 28 680"><path d="M 0 340 H 28"/></svg>
+        <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 28 690"><path d="M 0 345 H 28"/></svg>
       </div>
     </div>
 
-    <!-- CENTER PODIUM -->
+    <!-- CENTER TROPHY & FINALS -->
     <div class="center-podium">
-      <div style="font-weight:900; letter-spacing:2px; color:#7a869a;">{ GDG HK }</div>
+      <div style="font-weight:900; letter-spacing:2px; color:#7a869a; font-size:0.85rem;">GDGoC PolyU • 2026</div>
       <div class="trophy-graphic">🏆</div>
-      <div style="font-family:'Montserrat'; font-weight:900; font-size:1rem; letter-spacing:2px;">ROAD TO GLORY</div>
+      <div style="font-family:'Montserrat'; font-weight:900; font-size:1.1rem; letter-spacing:2px;">ROAD TO GLORY</div>
 
       <div class="grand-final-box">
-        <div style="color:var(--neon-lime); font-size:0.75rem; font-weight:900; margin-bottom:8px;">🔥 GRAND FINAL</div>
+        <div class="final-badge">🔥 GRAND FINAL</div>
         <div style="display:flex; flex-direction:column; gap:6px;">
-          <div class="slot" id="slot-F-1"><div class="slot-id tag-neutral">F1</div><span class="team-name">TBD</span></div>
-          <div class="slot" id="slot-F-2"><div class="slot-id tag-neutral">F2</div><span class="team-name">TBD</span></div>
+          <div class="slot" id="slot-F-1"><div class="slot-id tag-neutral">F1</div><div class="product-icon"></div><span class="team-name">TBD</span></div>
+          <div class="slot" id="slot-F-2"><div class="slot-id tag-neutral">F2</div><div class="product-icon"></div><span class="team-name">TBD</span></div>
         </div>
-        <div class="champion-winner" id="slot-CHAMPION">👑 WINNER: TBD</div>
+        <div class="champion-preview-btn" id="slot-CHAMPION" onclick="showWinnerScreen()">👑 CHAMPION: TBD</div>
       </div>
     </div>
 
-    <!-- RIGHT HALF -->
+    <!-- RIGHT HALF (TEAMS 9 TO 16) -->
     <div class="bracket-half right">
       <div class="round-col">
         <div class="match-pair">
-          <div class="slot" id="slot-9"><div class="slot-id tag-blue">9</div><span class="team-name">Team Palette</span></div>
-          <div class="slot" id="slot-10"><div class="slot-id tag-blue">10</div><span class="team-name">Team Render</span></div>
+          <div class="slot" id="slot-9"><div class="slot-id tag-red">9</div><div class="product-icon" id="icon-9"></div><span class="team-name">Gmail</span></div>
+          <div class="slot" id="slot-10"><div class="slot-id tag-blue">10</div><div class="product-icon" id="icon-10"></div><span class="team-name">Google Calendar</span></div>
         </div>
         <div class="match-pair">
-          <div class="slot" id="slot-11"><div class="slot-id tag-red">11</div><span class="team-name">Team Shade</span></div>
-          <div class="slot" id="slot-12"><div class="slot-id tag-red">12</div><span class="team-name">Team Layer</span></div>
+          <div class="slot" id="slot-11"><div class="slot-id tag-green">11</div><div class="product-icon" id="icon-11"></div><span class="team-name">Google Meet</span></div>
+          <div class="slot" id="slot-12"><div class="slot-id tag-yellow">12</div><div class="product-icon" id="icon-12"></div><span class="team-name">Google Drive</span></div>
         </div>
         <div class="match-pair">
-          <div class="slot" id="slot-13"><div class="slot-id tag-yellow">13</div><span class="team-name">Team Curve</span></div>
-          <div class="slot" id="slot-14"><div class="slot-id tag-yellow">14</div><span class="team-name">Team Stroke</span></div>
+          <div class="slot" id="slot-13"><div class="slot-id tag-green">13</div><div class="product-icon" id="icon-13"></div><span class="team-name">Android</span></div>
+          <div class="slot" id="slot-14"><div class="slot-id tag-blue">14</div><div class="product-icon" id="icon-14"></div><span class="team-name">Google Pixel</span></div>
         </div>
         <div class="match-pair">
-          <div class="slot" id="slot-15"><div class="slot-id tag-green">15</div><span class="team-name">Team Trace</span></div>
-          <div class="slot" id="slot-16"><div class="slot-id tag-green">16</div><span class="team-name">Team Grid</span></div>
+          <div class="slot" id="slot-15"><div class="slot-id tag-yellow">15</div><div class="product-icon" id="icon-15"></div><span class="team-name">Chromebook</span></div>
+          <div class="slot" id="slot-16"><div class="slot-id tag-blue">16</div><div class="product-icon" id="icon-16"></div><span class="team-name">Google Nest</span></div>
         </div>
       </div>
 
       <div class="connector-col">
-        <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 28 680">
+        <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 28 690">
           <path d="M 28 65 H 14 V 145 H 0 M 28 145 H 14"/><path d="M 28 235 H 14 V 315 H 0 M 28 315 H 14"/>
           <path d="M 28 405 H 14 V 485 H 0 M 28 485 H 14"/><path d="M 28 575 H 14 V 655 H 0 M 28 655 H 14"/>
         </svg>
@@ -204,39 +406,77 @@
 
       <div class="round-col">
         <div class="match-pair">
-          <div class="slot" id="slot-R-QF-1"><div class="slot-id tag-neutral">QF5</div><span class="team-name">---</span></div>
-          <div class="slot" id="slot-R-QF-2"><div class="slot-id tag-neutral">QF6</div><span class="team-name">---</span></div>
+          <div class="slot" id="slot-R-QF-1"><div class="slot-id tag-neutral">QF5</div><div class="product-icon"></div><span class="team-name">---</span></div>
+          <div class="slot" id="slot-R-QF-2"><div class="slot-id tag-neutral">QF6</div><div class="product-icon"></div><span class="team-name">---</span></div>
         </div>
         <div class="match-pair">
-          <div class="slot" id="slot-R-QF-3"><div class="slot-id tag-neutral">QF7</div><span class="team-name">---</span></div>
-          <div class="slot" id="slot-R-QF-4"><div class="slot-id tag-neutral">QF8</div><span class="team-name">---</span></div>
+          <div class="slot" id="slot-R-QF-3"><div class="slot-id tag-neutral">QF7</div><div class="product-icon"></div><span class="team-name">---</span></div>
+          <div class="slot" id="slot-R-QF-4"><div class="slot-id tag-neutral">QF8</div><div class="product-icon"></div><span class="team-name">---</span></div>
         </div>
       </div>
 
       <div class="connector-col">
-        <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 28 680">
-          <path d="M 28 145 H 14 V 340 H 0 M 28 535 H 14 V 340"/>
+        <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 28 690">
+          <path d="M 28 145 H 14 V 345 H 0 M 28 545 H 14 V 345"/>
         </svg>
       </div>
 
       <div class="round-col">
         <div class="match-pair">
-          <div class="slot" id="slot-R-SF-1"><div class="slot-id tag-neutral">SF3</div><span class="team-name">---</span></div>
-          <div class="slot" id="slot-R-SF-2"><div class="slot-id tag-neutral">SF4</div><span class="team-name">---</span></div>
+          <div class="slot" id="slot-R-SF-1"><div class="slot-id tag-neutral">SF3</div><div class="product-icon"></div><span class="team-name">---</span></div>
+          <div class="slot" id="slot-R-SF-2"><div class="slot-id tag-neutral">SF4</div><div class="product-icon"></div><span class="team-name">---</span></div>
         </div>
       </div>
 
       <div class="connector-col">
-        <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 28 680"><path d="M 28 340 H 0"/></svg>
+        <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 28 690"><path d="M 28 345 H 0"/></svg>
       </div>
     </div>
   </div>
 
-  <div class="live-indicator"><div class="dot"></div> REAL-TIME LIVE CONNECTED</div>
+  <div class="live-indicator"><div class="dot"></div> GDGoC PolyU LIVE CONNECTED</div>
+
+  <!-- FULLSCREEN WINNER REVEAL STAGE -->
+  <div class="winner-overlay" id="winnerOverlay">
+    <div class="winner-content">
+      <div class="winner-tag">🏆 GDGoC PolyU CHAMPION 🏆</div>
+      <div class="winner-logo-box" id="winnerLogoBox"></div>
+      <div class="winner-team-title" id="winnerTeamTitle">Team Google Slides</div>
+      <div class="winner-category" id="winnerCategory">Productivity & Presentation Tools</div>
+      <button class="close-overlay-btn" onclick="hideWinnerScreen()">Back to Bracket</button>
+    </div>
+  </div>
 
   <script>
     const TOPIC = 'gdghk-bracket-channel-2026';
     let audioReady = false;
+    let currentChampionData = null;
+
+    // HIGH QUALITY VECTOR ICONS FOR ALL 16 GOOGLE PRODUCTS
+    const PRODUCT_LOGOS = {
+      1: `<svg viewBox="0 0 24 24"><path fill="#4285F4" d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>`, // Docs
+      2: `<svg viewBox="0 0 24 24"><path fill="#0F9D58" d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 16H8v-2h5v2zm0-3H8v-2h5v2zm0-3H8v-2h5v2zm5 6h-3v-2h3v2zm0-3h-3v-2h3v2zm-4-5V3.5L18.5 9H13z"/></svg>`, // Sheets
+      3: `<svg viewBox="0 0 24 24"><path fill="#F4B400" d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm4 16H6V4h7v5h5v9zM8 12h8v4H8z"/></svg>`, // Slides
+      4: `<svg viewBox="0 0 24 24"><path fill="#7248B9" d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm1 14h-6v-2h6v2zm0-4h-6v-2h6v2zm-2-4V3.5L18.5 9H13z"/></svg>`, // Forms
+      5: `<svg viewBox="0 0 24 24"><path fill="#FF0000" d="M21.58 7.19a2.5 2.5 0 0 0-1.76-1.77C18.25 5 12 5 12 5s-6.25 0-7.82.42a2.5 2.5 0 0 0-1.76 1.77A26.4 26.4 0 0 0 2 12a26.4 26.4 0 0 0 .42 4.81 2.5 2.5 0 0 0 1.76 1.77C5.75 19 12 19 12 19s6.25 0 7.82-.42a2.5 2.5 0 0 0 1.76-1.77A26.4 26.4 0 0 0 22 12a26.4 26.4 0 0 0-.42-4.81zM9.75 15.02V8.98L15 12l-5.25 3.02z"/></svg>`, // YouTube
+      6: `<svg viewBox="0 0 24 24"><path fill="#4285F4" d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 14H3V5h18v12zm-11-2l6-4-6-4v8z"/></svg>`, // Google TV
+      7: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="#FBBC05"/><path fill="#4285F4" d="M12 4a8 8 0 0 0-8 8h2a6 6 0 0 1 6-6V4zm0 16a8 8 0 0 0 8-8h-2a6 6 0 0 1-6 6v2z"/><path fill="#34A853" d="M12 1a11 11 0 0 0-11 11h2a9 9 0 0 1 9-9V1zm0 22a11 11 0 0 0 11-11h-2a9 9 0 0 1-9 9v2z"/></svg>`, // Podcasts
+      8: `<svg viewBox="0 0 24 24"><path fill="#4285F4" d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm-1 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"/></svg>`, // Books
+      9: `<svg viewBox="0 0 24 24"><path fill="#EA4335" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>`, // Gmail
+      10: `<svg viewBox="0 0 24 24"><path fill="#4285F4" d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM11 11h2v5h-2z"/></svg>`, // Calendar
+      11: `<svg viewBox="0 0 24 24"><path fill="#00832D" d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg>`, // Meet
+      12: `<svg viewBox="0 0 24 24"><path fill="#FBBC05" d="M7.71 3.5L1.15 15l3.43 6 6.55-11.5z"/><path fill="#4285F4" d="M16.29 3.5H7.71l6.55 11.5h8.59z"/><path fill="#34A853" d="M22.85 15l-3.43 6H4.58l3.43-6z"/></svg>`, // Drive
+      13: `<svg viewBox="0 0 24 24"><path fill="#3DDC84" d="M16.61 15.15c-.46 0-.84-.38-.84-.84s.38-.84.84-.84.84.38.84.84-.38.84-.84.84zm-9.22 0c-.46 0-.84-.38-.84-.84s.38-.84.84-.84.84.38.84.84-.38.84-.84.84zm9.49-5.11l1.72-2.98a.46.46 0 1 0-.8-.46l-1.75 3.03C14.71 9.24 13.39 9 12 9s-2.71.24-4.05.63L6.2 6.6a.46.46 0 1 0-.8.46l1.72 2.98C4.33 11.45 2.5 14.28 2.5 17.5h19c0-3.22-1.83-6.05-4.62-7.46z"/></svg>`, // Android
+      14: `<svg viewBox="0 0 24 24"><path fill="#4285F4" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/></svg>`, // Pixel
+      15: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" fill="#4285F4"/><path fill="#EA4335" d="M12 2a10 10 0 0 0-8.66 5l4.33 7.5A6 6 0 0 1 12 8h8.66A10 10 0 0 0 12 2z"/><path fill="#FBBC05" d="M22 12a10 10 0 0 0-1.34-5H12a6 6 0 0 1 5.2 3l-4.33 7.5A6 6 0 0 1 12 18l4.33 4A10 10 0 0 0 22 12z"/><path fill="#34A853" d="M12 22a10 10 0 0 0 8.66-5L16.33 9.5A6 6 0 0 1 12 16a6 6 0 0 1-5.2-3L2.47 17A10 10 0 0 0 12 22z"/></svg>`, // Chromebook
+      16: `<svg viewBox="0 0 24 24"><path fill="#00A1F1" d="M12 3L2 12h3v8h14v-8h3L12 3zm0 4.5l5 4.5v6H7v-6l5-4.5z"/></svg>` // Nest
+    };
+
+    // Render Round 1 Logos
+    for (let i = 1; i <= 16; i++) {
+      const iconEl = document.getElementById(`icon-${i}`);
+      if (iconEl && PRODUCT_LOGOS[i]) iconEl.innerHTML = PRODUCT_LOGOS[i];
+    }
 
     function enableAudio() { audioReady = true; }
 
@@ -244,20 +484,32 @@
       if (!audioReady) return;
       try {
         const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const notes = [261.63, 329.63, 392.00, 523.25];
+        const notes = [261.63, 329.63, 392.00, 523.25, 659.25];
         notes.forEach((freq, i) => {
           const osc = ctx.createOscillator();
           const gain = ctx.createGain();
           osc.type = "triangle";
           osc.frequency.setValueAtTime(freq, ctx.currentTime + i * 0.08);
           gain.gain.setValueAtTime(0.25, ctx.currentTime + i * 0.08);
-          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.08 + 0.35);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.08 + 0.4);
           osc.connect(gain);
           gain.connect(ctx.destination);
           osc.start(ctx.currentTime + i * 0.08);
-          osc.stop(ctx.currentTime + i * 0.08 + 0.4);
+          osc.stop(ctx.currentTime + i * 0.08 + 0.45);
         });
       } catch (e) {}
+    }
+
+    function showWinnerScreen() {
+      if (!currentChampionData) return;
+      document.getElementById('winnerLogoBox').innerHTML = PRODUCT_LOGOS[currentChampionData.teamNum] || '🏆';
+      document.getElementById('winnerTeamTitle').innerText = `#${currentChampionData.teamNum} ${currentChampionData.teamName}`;
+      document.getElementById('winnerCategory').innerText = currentChampionData.category || 'Google Ecosystem Champion';
+      document.getElementById('winnerOverlay').classList.add('active');
+    }
+
+    function hideWinnerScreen() {
+      document.getElementById('winnerOverlay').classList.remove('active');
     }
 
     function handleAction(data) {
@@ -266,11 +518,14 @@
         if (slotEl) {
           const tagEl = slotEl.querySelector('.slot-id');
           const nameEl = slotEl.querySelector('.team-name');
+          const iconEl = slotEl.querySelector('.product-icon');
+
           if (tagEl) {
             tagEl.className = `slot-id ${data.tagClass}`;
             tagEl.innerText = data.teamNum;
           }
           if (nameEl) nameEl.innerText = data.teamName;
+          if (iconEl && PRODUCT_LOGOS[data.teamNum]) iconEl.innerHTML = PRODUCT_LOGOS[data.teamNum];
 
           slotEl.classList.add('highlight');
           setTimeout(() => slotEl.classList.remove('highlight'), 2000);
@@ -279,12 +534,19 @@
         }
       } 
       else if (data.type === 'CHAMPION') {
-        const champEl = document.getElementById('slot-CHAMPION');
-        if (champEl) champEl.innerText = `👑 WINNER: #${data.teamNum} ${data.teamName}`;
+        currentChampionData = data;
+        const champBtn = document.getElementById('slot-CHAMPION');
+        if (champBtn) champBtn.innerText = `👑 WINNER: #${data.teamNum} ${data.teamName}`;
+        
+        // Shoot big confetti & show winner screen
         confetti({ particleCount: 250, spread: 120, origin: { y: 0.5 } });
         playFanfare();
+        setTimeout(showWinnerScreen, 800);
       }
       else if (data.type === 'RESET') {
+        hideWinnerScreen();
+        currentChampionData = null;
+
         const qfSlots = [
           ['L-QF-1','QF1'],['L-QF-2','QF2'],['L-QF-3','QF3'],['L-QF-4','QF4'],
           ['R-QF-1','QF5'],['R-QF-2','QF6'],['R-QF-3','QF7'],['R-QF-4','QF8']
@@ -294,6 +556,7 @@
           if (el) {
             el.querySelector('.slot-id').className = 'slot-id tag-neutral';
             el.querySelector('.slot-id').innerText = placeholder;
+            el.querySelector('.product-icon').innerHTML = '';
             el.querySelector('.team-name').innerText = '---';
           }
         });
@@ -304,6 +567,7 @@
           if (el) {
             el.querySelector('.slot-id').className = 'slot-id tag-neutral';
             el.querySelector('.slot-id').innerText = placeholder;
+            el.querySelector('.product-icon').innerHTML = '';
             el.querySelector('.team-name').innerText = '---';
           }
         });
@@ -313,11 +577,12 @@
           if (el) {
             el.querySelector('.slot-id').className = 'slot-id tag-neutral';
             el.querySelector('.slot-id').innerText = `F${i+1}`;
+            el.querySelector('.product-icon').innerHTML = '';
             el.querySelector('.team-name').innerText = 'TBD';
           }
         });
 
-        document.getElementById('slot-CHAMPION').innerText = '👑 WINNER: TBD';
+        document.getElementById('slot-CHAMPION').innerText = '👑 CHAMPION: TBD';
       }
     }
 
