@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 
 /**
- * GDGoC PolyU - Google Products Tournament Commander
+ * GDGoC PolyU - Interactive Tournament REPL Shell
  */
 
 const https = require('https');
+const readline = require('readline');
 
 const TOPIC = 'gdghk-bracket-channel-2026';
 
@@ -27,28 +28,30 @@ const TEAMS = {
   16: { name: 'Google Nest',     category: 'Hardware & Operating Systems',  color: 'tag-blue',   qf: 'R-QF-4', sf: 'R-SF-2', final: 'F-2' },
 };
 
-const args = process.argv.slice(2);
-const command = args[0]?.toLowerCase();
-const targetInput = args.slice(1).join(' ').toLowerCase().trim();
-
 function broadcast(payload) {
-  const data = JSON.stringify(payload);
-  const options = {
-    hostname: 'ntfy.sh',
-    port: 443,
-    path: `/${TOPIC}`,
-    method: 'POST',
-    headers: { 'Content-Type': 'text/plain', 'Content-Length': Buffer.byteLength(data) }
-  };
-  const req = https.request(options, () => {
-    console.log(`\x1b[32m✔ [GDGoC PolyU SYNC]\x1b[0m Stage screen updated in real-time!`);
+  return new Promise((resolve) => {
+    const data = JSON.stringify(payload);
+    const options = {
+      hostname: 'ntfy.sh',
+      port: 443,
+      path: `/${TOPIC}`,
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain', 'Content-Length': Buffer.byteLength(data) }
+    };
+    const req = https.request(options, () => {
+      console.log(`\x1b[32m✔ [BROADCAST SUCCESS]\x1b[0m Live screen updated!`);
+      resolve();
+    });
+    req.on('error', (e) => {
+      console.error(`✖ Error: ${e.message}`);
+      resolve();
+    });
+    req.write(data);
+    req.end();
   });
-  req.on('error', (e) => console.error(`✖ Error: ${e.message}`));
-  req.write(data);
-  req.end();
 }
 
-async function getTeamCurrentRound(teamNum) {
+async function getTeamCurrentWins(teamNum) {
   return new Promise((resolve) => {
     https.get(`https://ntfy.sh/${TOPIC}/json?poll=1&since=8h`, (res) => {
       let body = '';
@@ -74,95 +77,123 @@ async function getTeamCurrentRound(teamNum) {
 
 function findTeamNum(query) {
   if (!query) return null;
-  if (!isNaN(query) && TEAMS[Number(query)]) return Number(query);
+  const q = query.toLowerCase().trim().replace(/^advance\s+/, '').replace(/^move\s+/, '');
+  if (!isNaN(q) && TEAMS[Number(q)]) return Number(q);
   
   for (const [id, team] of Object.entries(TEAMS)) {
     const cleanName = team.name.toLowerCase();
     const shortName = cleanName.replace('google ', '');
-    if (cleanName.includes(query) || shortName.includes(query) || query.includes(shortName)) {
+    if (cleanName.includes(q) || shortName.includes(q) || q.includes(shortName)) {
       return Number(id);
     }
   }
   return null;
 }
 
-async function run() {
-  if (!command || command === 'help') {
-    console.log(`
-\x1b[36mGDGoC PolyU - Google Tournament Commander\x1b[0m
-  node control.js advance <product name or #>  -> Automatically advances team to next round
-  node control.js reset                        -> Resets whole tournament
+async function handleCommand(input) {
+  const line = input.trim();
+  if (!line) return;
 
-\x1b[33mExamples:\x1b[0m
-  node control.js advance docs       (Advances Google Docs)
-  node control.js advance slides     (Advances Google Slides)
-  node control.js advance youtube    (Advances YouTube)
-  node control.js advance meet       (Advances Google Meet)
-  node control.js advance 10         (Advances Team 10 - Calendar)
-    `);
+  const lower = line.toLowerCase();
+
+  if (lower === 'exit' || lower === 'quit') {
+    console.log('Goodbye! 👋');
     process.exit(0);
   }
 
-  if (command === 'reset') {
+  if (lower === 'reset') {
     console.log(`🔄 Resetting tournament bracket...`);
-    broadcast({ type: 'RESET' });
+    await broadcast({ type: 'RESET' });
     return;
   }
 
-  if (['advance', 'move', 'win'].includes(command)) {
-    const teamNum = findTeamNum(targetInput);
-    if (!teamNum) {
-      console.log(`\x1b[31m✖ Team not found:\x1b[0m "${targetInput}". Try: docs, sheets, slides, youtube, meet, pixel, etc.`);
-      process.exit(1);
+  if (lower === 'list') {
+    console.log('\n\x1b[36m--- GDGoC PolyU 16 Teams ---\x1b[0m');
+    for (const [id, team] of Object.entries(TEAMS)) {
+      console.log(` #${id.padStart(2)}: ${team.name} (${team.category})`);
     }
+    console.log('');
+    return;
+  }
 
-    const team = TEAMS[teamNum];
-    const currentWins = await getTeamCurrentRound(teamNum);
+  // Handle advance command (supports: "advance slides", "slides", "advance 3", "3")
+  const teamNum = findTeamNum(line);
+  if (!teamNum) {
+    console.log(`\x1b[31m✖ Unknown team or command:\x1b[0m "${line}". (Type 'list' or e.g. "slides", "3", "reset")`);
+    return;
+  }
 
-    if (currentWins === 0) {
-      console.log(`🏆 Advancing [#${teamNum} ${team.name}] to QUARTER-FINALS...`);
-      broadcast({
-        type: 'ADVANCE_SLOT',
-        teamNum,
-        teamName: team.name,
-        tagClass: team.color,
-        targetSlot: team.qf
-      });
-    } 
-    else if (currentWins === 1) {
-      console.log(`🏆 Advancing [#${teamNum} ${team.name}] to SEMI-FINALS...`);
-      broadcast({
-        type: 'ADVANCE_SLOT',
-        teamNum,
-        teamName: team.name,
-        tagClass: team.color,
-        targetSlot: team.sf
-      });
-    } 
-    else if (currentWins === 2) {
-      console.log(`🔥 [#${teamNum} ${team.name}] enters the GRAND FINAL!`);
-      broadcast({
-        type: 'ADVANCE_SLOT',
-        teamNum,
-        teamName: team.name,
-        tagClass: team.color,
-        targetSlot: team.final
-      });
-    } 
-    else if (currentWins === 3) {
-      console.log(`👑 CROWNING GRAND CHAMPION: [#${teamNum} ${team.name}]!`);
-      broadcast({
-        type: 'CHAMPION',
-        teamNum,
-        teamName: team.name,
-        tagClass: team.color,
-        category: team.category
-      });
-    } 
-    else {
-      console.log(`\x1b[33mℹ [#${teamNum} ${team.name}] is already the Grand Champion!\x1b[0m`);
-    }
+  const team = TEAMS[teamNum];
+  const currentWins = await getTeamCurrentWins(teamNum);
+
+  if (currentWins === 0) {
+    console.log(`🏆 Advancing [#${teamNum} ${team.name}] to QUARTER-FINALS...`);
+    await broadcast({
+      type: 'ADVANCE_SLOT',
+      teamNum,
+      teamName: team.name,
+      tagClass: team.color,
+      targetSlot: team.qf
+    });
+  } 
+  else if (currentWins === 1) {
+    console.log(`🏆 Advancing [#${teamNum} ${team.name}] to SEMI-FINALS...`);
+    await broadcast({
+      type: 'ADVANCE_SLOT',
+      teamNum,
+      teamName: team.name,
+      tagClass: team.color,
+      targetSlot: team.sf
+    });
+  } 
+  else if (currentWins === 2) {
+    console.log(`🔥 [#${teamNum} ${team.name}] enters the GRAND FINAL!`);
+    await broadcast({
+      type: 'ADVANCE_SLOT',
+      teamNum,
+      teamName: team.name,
+      tagClass: team.color,
+      targetSlot: team.final
+    });
+  } 
+  else if (currentWins === 3) {
+    console.log(`👑 CROWNING GRAND CHAMPION: [#${teamNum} ${team.name}]!`);
+    await broadcast({
+      type: 'CHAMPION',
+      teamNum,
+      teamName: team.name,
+      tagClass: team.color,
+      category: team.category
+    });
+  } 
+  else {
+    console.log(`\x1b[33mℹ [#${teamNum} ${team.name}] is already the Grand Champion!\x1b[0m`);
   }
 }
 
-run();
+// START INTERACTIVE REPL
+console.clear();
+console.log(`
+\x1b[32m╔══════════════════════════════════════════════════════════════╗
+║        GDGoC PolyU - LIVE DRAWING GAME COMMAND CENTER        ║
+╚══════════════════════════════════════════════════════════════╝\x1b[0m
+
+\x1b[33mCommands:\x1b[0m
+  • Type any team name or number to advance: \x1b[36mslides\x1b[0m, \x1b[36mdocs\x1b[0m, \x1b[36m3\x1b[0m, \x1b[36m10\x1b[0m
+  • Type \x1b[36mreset\x1b[0m to clear bracket
+  • Type \x1b[36mlist\x1b[0m to view all 16 teams
+  • Type \x1b[36mexit\x1b[0m to quit
+`);
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+  prompt: '\x1b[35mGDGoC PolyU > \x1b[0m'
+});
+
+rl.prompt();
+
+rl.on('line', async (line) => {
+  await handleCommand(line);
+  rl.prompt();
+});

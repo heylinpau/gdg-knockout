@@ -9,7 +9,7 @@
   <style>
     :root {
       --bg: #07090e;
-      --card-bg: rgba(18, 22, 31, 0.92);
+      --card-bg: rgba(18, 22, 31, 0.94);
       --card-border: #242c3d;
       --neon-lime: #b8ff02;
       --g-blue: #4285F4;
@@ -21,8 +21,8 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     
     html, body {
-      width: 100%;
-      height: 100%;
+      width: 100vw;
+      height: 100vh;
       overflow: hidden;
       background: var(--bg);
       color: #fff;
@@ -41,21 +41,39 @@
       position: relative;
     }
 
+    /* TOP RIGHT CREDIT */
+    .top-right-credit {
+      position: fixed;
+      top: 14px;
+      right: 18px;
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #9aa0a6;
+      letter-spacing: 0.5px;
+      backdrop-filter: blur(8px);
+    }
+    .top-right-credit span { color: var(--neon-lime); }
+
     /* DECORATIVE SIDE PILLS */
-    .side-pill { position: fixed; width: 10px; border-radius: 20px; z-index: 1; opacity: 0.85; }
-    .pill-left-1 { top: 12%; left: 10px; height: 100px; background: var(--g-red); }
-    .pill-left-2 { top: 32%; left: 10px; height: 60px; background: var(--g-yellow); }
-    .pill-left-3 { top: 48%; left: 10px; height: 130px; background: var(--g-blue); }
-    .pill-left-4 { top: 72%; left: 10px; height: 80px; background: var(--neon-lime); }
-    .pill-right-1 { top: 15%; right: 10px; height: 120px; background: var(--neon-lime); }
-    .pill-right-2 { top: 38%; right: 10px; height: 70px; background: var(--g-blue); }
-    .pill-right-3 { top: 54%; right: 10px; height: 100px; background: var(--g-red); }
-    .pill-right-4 { top: 76%; right: 10px; height: 50px; background: var(--g-yellow); }
+    .side-pill { position: fixed; width: 8px; border-radius: 20px; z-index: 1; opacity: 0.85; }
+    .pill-left-1 { top: 12%; left: 8px; height: 90px; background: var(--g-red); }
+    .pill-left-2 { top: 32%; left: 8px; height: 50px; background: var(--g-yellow); }
+    .pill-left-3 { top: 48%; left: 8px; height: 110px; background: var(--g-blue); }
+    .pill-left-4 { top: 72%; left: 8px; height: 70px; background: var(--neon-lime); }
+    .pill-right-1 { top: 15%; right: 8px; height: 100px; background: var(--neon-lime); }
+    .pill-right-2 { top: 38%; right: 8px; height: 60px; background: var(--g-blue); }
+    .pill-right-3 { top: 54%; right: 8px; height: 90px; background: var(--g-red); }
+    .pill-right-4 { top: 76%; right: 8px; height: 45px; background: var(--g-yellow); }
 
     /* MASTER RESPONSIVE SCALER WRAPPER */
     #stage-scaler {
-      width: 1480px;
-      height: 820px;
+      width: 1400px;
+      height: 780px;
       transform-origin: center center;
       display: flex;
       flex-direction: column;
@@ -67,16 +85,16 @@
     }
 
     /* GDG LOGO & HEADER */
-    .header { text-align: center; margin-bottom: 8px; display: flex; flex-direction: column; align-items: center; }
+    .header { text-align: center; margin-bottom: 6px; display: flex; flex-direction: column; align-items: center; }
     .gdg-brand {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       margin-bottom: 2px;
     }
-    .gdg-svg-logo { width: 42px; height: 24px; }
+    .gdg-svg-logo { width: 38px; height: 22px; }
     .gdg-title-text {
-      font-size: 0.92rem;
+      font-size: 0.88rem;
       font-weight: 700;
       letter-spacing: 2px;
       text-transform: uppercase;
@@ -85,21 +103,21 @@
     .gdg-title-text span.polyu {
       color: var(--neon-lime);
       background: rgba(184, 255, 2, 0.12);
-      padding: 2px 8px;
+      padding: 1px 7px;
       border-radius: 6px;
       border: 1px solid rgba(184, 255, 2, 0.3);
-      margin-left: 6px;
+      margin-left: 4px;
     }
     .tournament-title {
       font-family: 'Montserrat', sans-serif;
       font-style: italic;
-      font-size: 2.3rem;
+      font-size: 2.2rem;
       font-weight: 900;
       letter-spacing: 1.5px;
       text-transform: uppercase;
       color: var(--neon-lime);
       text-shadow: 0 0 25px rgba(184, 255, 2, 0.4);
-      line-height: 1;
+      line-height: 1.1;
     }
 
     /* BRACKET LAYOUT */
@@ -108,27 +126,27 @@
     .bracket-half.left { justify-content: flex-start; }
     .bracket-half.right { justify-content: flex-end; flex-direction: row-reverse; }
 
-    .round-col { display: flex; flex-direction: column; justify-content: space-around; height: 660px; width: 205px; }
+    .round-col { display: flex; flex-direction: column; justify-content: space-around; height: 640px; width: 185px; }
     .match-pair { display: flex; flex-direction: column; gap: 6px; }
 
-    /* UNIFORM SLOT CARDS (205px Wide - No Name Cutoff) */
+    /* UNIFORM SLOT CARDS */
     .slot {
-      width: 205px;
+      width: 185px;
       height: 38px;
       background: var(--card-bg);
       border: 1.5px solid var(--card-border);
       border-radius: 9px;
-      padding: 0 10px;
+      padding: 0 8px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 7px;
       backdrop-filter: blur(6px);
       transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
     .slot.highlight {
       border-color: var(--neon-lime) !important;
       background: rgba(184, 255, 2, 0.22) !important;
-      transform: scale(1.06);
+      transform: scale(1.05);
       box-shadow: 0 0 20px rgba(184, 255, 2, 0.5);
     }
 
@@ -139,7 +157,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       font-weight: 800;
       flex-shrink: 0;
     }
@@ -151,8 +169,8 @@
     .tag-neutral { background: #232b3b; color: #7a869a; }
 
     .product-icon {
-      width: 18px;
-      height: 18px;
+      width: 17px;
+      height: 17px;
       flex-shrink: 0;
       display: flex;
       align-items: center;
@@ -161,23 +179,23 @@
     .product-icon svg { width: 100%; height: 100%; }
 
     .team-name {
-      font-size: 0.82rem;
+      font-size: 0.78rem;
       font-weight: 700;
       white-space: nowrap;
       flex: 1;
     }
 
     /* CONNECTOR LINES */
-    .connector-col { width: 22px; height: 660px; flex-shrink: 0; }
+    .connector-col { width: 20px; height: 640px; flex-shrink: 0; }
     .connector-svg { width: 100%; height: 100%; stroke: var(--line); stroke-width: 2; fill: none; }
 
     /* CENTER PODIUM */
-    .center-podium { width: 270px; margin: 0 10px; display: flex; flex-direction: column; align-items: center; text-align: center; }
-    .trophy-graphic { font-size: 4.2rem; filter: drop-shadow(0 4px 18px rgba(251, 188, 5, 0.55)); animation: float 3s ease-in-out infinite; }
+    .center-podium { width: 250px; margin: 0 8px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+    .trophy-graphic { font-size: 4rem; filter: drop-shadow(0 4px 18px rgba(251, 188, 5, 0.55)); animation: float 3s ease-in-out infinite; }
     @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
 
     .grand-final-box {
-      margin-top: 8px;
+      margin-top: 6px;
       width: 100%;
       background: #11151f;
       border: 2px solid var(--neon-lime);
@@ -185,7 +203,7 @@
       border-radius: 12px;
       padding: 10px;
     }
-    .final-badge { font-family: 'Montserrat'; font-size: 0.75rem; font-weight: 900; color: var(--neon-lime); letter-spacing: 2px; margin-bottom: 6px; }
+    .final-badge { font-family: 'Montserrat'; font-size: 0.74rem; font-weight: 900; color: var(--neon-lime); letter-spacing: 2px; margin-bottom: 6px; }
     
     .champion-preview-btn {
       margin-top: 8px;
@@ -193,7 +211,7 @@
       border: 1.5px dashed var(--g-yellow);
       border-radius: 8px;
       padding: 8px;
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       font-weight: 800;
       color: var(--g-yellow);
       cursor: pointer;
@@ -201,7 +219,7 @@
     }
     .champion-preview-btn:hover { background: rgba(251, 188, 5, 0.15); transform: scale(1.02); }
 
-    /* FULLSCREEN WINNER OVERLAY (THE GRAND REVEAL) */
+    /* FULLSCREEN WINNER OVERLAY */
     .winner-overlay {
       position: fixed;
       top: 0; left: 0; width: 100vw; height: 100vh;
@@ -260,14 +278,14 @@
     }
 
     .winner-team-title {
-      font-size: 3rem;
+      font-size: 2.8rem;
       font-weight: 900;
       color: #ffffff;
       margin-bottom: 6px;
       letter-spacing: -0.5px;
     }
     .winner-category {
-      font-size: 1.05rem;
+      font-size: 1rem;
       color: #9aa0a6;
       font-weight: 500;
       letter-spacing: 1px;
@@ -310,7 +328,6 @@
       50% { transform: rotate(90deg); }
     }
 
-    /* Trigger Portrait Warning on Mobile Portrait Mode */
     @media (max-width: 900px) and (orientation: portrait) {
       .portrait-warning { display: flex; }
       #stage-scaler { display: none; }
@@ -318,6 +335,9 @@
   </style>
 </head>
 <body onclick="enableAudio()">
+
+  <!-- TOP RIGHT CREDIT -->
+  <div class="top-right-credit">Developed by <span>GDGoC PolyU</span></div>
 
   <!-- MOBILE ROTATION NOTICE -->
   <div class="portrait-warning">
@@ -342,7 +362,6 @@
     <!-- HEADER -->
     <div class="header">
       <div class="gdg-brand">
-        <!-- EXACT GDG CHEVRON EMBEDDED LOGO -->
         <svg class="gdg-svg-logo" viewBox="0 0 100 55">
           <path d="M 30,12 L 14,28 A 6,6 0 0,0 14,36 L 30,52 A 6,6 0 0,0 38,44 L 26,32 L 38,20 A 6,6 0 0,0 30,12 Z" fill="#EA4335" />
           <path d="M 22,20 L 10,32 A 6,6 0 0,0 10,40 L 22,52 A 6,6 0 0,0 30,44 L 18,32 L 30,20 A 6,6 0 0,0 22,20 Z" fill="#4285F4" />
@@ -353,7 +372,7 @@
           Google Developer Groups on Campus <span class="polyu">PolyU</span>
         </div>
       </div>
-      <div class="tournament-title">DRAWING BATTLE KNOCKOUT</div>
+      <div class="tournament-title">DRAWING GAME KNOCKOUT</div>
     </div>
 
     <!-- TOURNAMENT BRACKET -->
@@ -381,9 +400,9 @@
         </div>
 
         <div class="connector-col">
-          <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 22 660">
-            <path d="M 0 60 H 11 V 140 H 22 M 0 140 H 11"/><path d="M 0 225 H 11 V 305 H 22 M 0 305 H 11"/>
-            <path d="M 0 390 H 11 V 470 H 22 M 0 470 H 11"/><path d="M 0 555 H 11 V 635 H 22 M 0 635 H 11"/>
+          <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 20 640">
+            <path d="M 0 60 H 10 V 140 H 20 M 0 140 H 10"/><path d="M 0 220 H 10 V 300 H 20 M 0 300 H 10"/>
+            <path d="M 0 380 H 10 V 460 H 20 M 0 460 H 10"/><path d="M 0 540 H 10 V 620 H 20 M 0 620 H 10"/>
           </svg>
         </div>
 
@@ -399,8 +418,8 @@
         </div>
 
         <div class="connector-col">
-          <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 22 660">
-            <path d="M 0 140 H 11 V 330 H 22 M 0 520 H 11 V 330"/>
+          <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 20 640">
+            <path d="M 0 140 H 10 V 320 H 20 M 0 500 H 10 V 320"/>
           </svg>
         </div>
 
@@ -412,15 +431,15 @@
         </div>
 
         <div class="connector-col">
-          <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 22 660"><path d="M 0 330 H 22"/></svg>
+          <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 20 640"><path d="M 0 320 H 20"/></svg>
         </div>
       </div>
 
       <!-- CENTER PODIUM -->
       <div class="center-podium">
-        <div style="font-weight:900; letter-spacing:2px; color:#7a869a; font-size:0.85rem;">GDGoC PolyU • 2026</div>
+        <div style="font-weight:900; letter-spacing:2px; color:#7a869a; font-size:0.8rem;">GDGoC PolyU • 2026</div>
         <div class="trophy-graphic">🏆</div>
-        <div style="font-family:'Montserrat'; font-weight:900; font-size:1.1rem; letter-spacing:2px;">ROAD TO GLORY</div>
+        <div style="font-family:'Montserrat'; font-weight:900; font-size:1rem; letter-spacing:2px;">ROAD TO GLORY</div>
 
         <div class="grand-final-box">
           <div class="final-badge">🔥 GRAND FINAL</div>
@@ -454,9 +473,9 @@
         </div>
 
         <div class="connector-col">
-          <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 22 660">
-            <path d="M 22 60 H 11 V 140 H 0 M 22 140 H 11"/><path d="M 22 225 H 11 V 305 H 0 M 22 305 H 11"/>
-            <path d="M 22 390 H 11 V 470 H 0 M 22 470 H 11"/><path d="M 22 555 H 11 V 635 H 0 M 22 635 H 11"/>
+          <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 20 640">
+            <path d="M 20 60 H 10 V 140 H 0 M 20 140 H 10"/><path d="M 20 220 H 10 V 300 H 0 M 20 300 H 10"/>
+            <path d="M 20 380 H 10 V 460 H 0 M 20 460 H 10"/><path d="M 20 540 H 10 V 620 H 0 M 20 620 H 10"/>
           </svg>
         </div>
 
@@ -472,8 +491,8 @@
         </div>
 
         <div class="connector-col">
-          <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 22 660">
-            <path d="M 22 140 H 11 V 330 H 0 M 22 520 H 11 V 330"/>
+          <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 20 640">
+            <path d="M 20 140 H 10 V 320 H 0 M 20 500 H 10 V 320"/>
           </svg>
         </div>
 
@@ -485,7 +504,7 @@
         </div>
 
         <div class="connector-col">
-          <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 22 660"><path d="M 22 330 H 0"/></svg>
+          <svg class="connector-svg" preserveAspectRatio="none" viewBox="0 0 20 640"><path d="M 20 320 H 0"/></svg>
         </div>
       </div>
     </div>
@@ -507,22 +526,22 @@
     let audioReady = false;
     let currentChampionData = null;
 
-    // RESPONSIVE SCALER ENGINE (Fits laptop, tablet, mobile perfectly)
+    // RESPONSIVE SCALER ENGINE (Calculates exact safe scale for all laptops & screens)
     function autoScaleViewport() {
       const stage = document.getElementById('stage-scaler');
       if (!stage) return;
       
-      const targetWidth = 1480;
-      const targetHeight = 820;
+      const targetWidth = 1400;
+      const targetHeight = 780;
       const windowWidth = window.innerWidth;
       const windowHeight = window.innerHeight;
 
-      // Scale to fit available viewport with padding
-      const scaleX = (windowWidth - 24) / targetWidth;
-      const scaleY = (windowHeight - 24) / targetHeight;
-      const scale = Math.min(scaleX, scaleY, 1.15);
+      // Safe buffer so side pills and laptop edges never touch
+      const scaleX = (windowWidth - 60) / targetWidth;
+      const scaleY = (windowHeight - 40) / targetHeight;
+      const scale = Math.min(scaleX, scaleY, 1.1);
 
-      stage.style.transform = `scale(${Math.max(scale, 0.35)})`;
+      stage.style.transform = `scale(${Math.max(scale, 0.3)})`;
     }
 
     window.addEventListener('resize', autoScaleViewport);
@@ -531,25 +550,24 @@
 
     // GOOGLE PRODUCT ICONS (16 PRODUCTS)
     const PRODUCT_LOGOS = {
-      1: `<svg viewBox="0 0 24 24"><path fill="#4285F4" d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>`, // Docs
-      2: `<svg viewBox="0 0 24 24"><path fill="#0F9D58" d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 16H8v-2h5v2zm0-3H8v-2h5v2zm0-3H8v-2h5v2zm5 6h-3v-2h3v2zm0-3h-3v-2h3v2zm-4-5V3.5L18.5 9H13z"/></svg>`, // Sheets
-      3: `<svg viewBox="0 0 24 24"><path fill="#F4B400" d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm4 16H6V4h7v5h5v9zM8 12h8v4H8z"/></svg>`, // Slides
-      4: `<svg viewBox="0 0 24 24"><path fill="#7248B9" d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm1 14h-6v-2h6v2zm0-4h-6v-2h6v2zm-2-4V3.5L18.5 9H13z"/></svg>`, // Forms
-      5: `<svg viewBox="0 0 24 24"><path fill="#FF0000" d="M21.58 7.19a2.5 2.5 0 0 0-1.76-1.77C18.25 5 12 5 12 5s-6.25 0-7.82.42a2.5 2.5 0 0 0-1.76 1.77A26.4 26.4 0 0 0 2 12a26.4 26.4 0 0 0 .42 4.81 2.5 2.5 0 0 0 1.76 1.77C5.75 19 12 19 12 19s6.25 0 7.82-.42a2.5 2.5 0 0 0 1.76-1.77A26.4 26.4 0 0 0 22 12a26.4 26.4 0 0 0-.42-4.81zM9.75 15.02V8.98L15 12l-5.25 3.02z"/></svg>`, // YouTube
-      6: `<svg viewBox="0 0 24 24"><path fill="#4285F4" d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 14H3V5h18v12zm-11-2l6-4-6-4v8z"/></svg>`, // Google TV
-      7: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="#FBBC05"/><path fill="#4285F4" d="M12 4a8 8 0 0 0-8 8h2a6 6 0 0 1 6-6V4zm0 16a8 8 0 0 0 8-8h-2a6 6 0 0 1-6 6v2z"/><path fill="#34A853" d="M12 1a11 11 0 0 0-11 11h2a9 9 0 0 1 9-9V1zm0 22a11 11 0 0 0 11-11h-2a9 9 0 0 1-9 9v2z"/></svg>`, // Podcasts
-      8: `<svg viewBox="0 0 24 24"><path fill="#4285F4" d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm-1 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"/></svg>`, // Books
-      9: `<svg viewBox="0 0 24 24"><path fill="#EA4335" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>`, // Gmail
-      10: `<svg viewBox="0 0 24 24"><path fill="#4285F4" d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM11 11h2v5h-2z"/></svg>`, // Calendar
-      11: `<svg viewBox="0 0 24 24"><path fill="#00832D" d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg>`, // Meet
-      12: `<svg viewBox="0 0 24 24"><path fill="#FBBC05" d="M7.71 3.5L1.15 15l3.43 6 6.55-11.5z"/><path fill="#4285F4" d="M16.29 3.5H7.71l6.55 11.5h8.59z"/><path fill="#34A853" d="M22.85 15l-3.43 6H4.58l3.43-6z"/></svg>`, // Drive
-      13: `<svg viewBox="0 0 24 24"><path fill="#3DDC84" d="M16.61 15.15c-.46 0-.84-.38-.84-.84s.38-.84.84-.84.84.38.84.84-.38.84-.84.84zm-9.22 0c-.46 0-.84-.38-.84-.84s.38-.84.84-.84.84.38.84.84-.38.84-.84.84zm9.49-5.11l1.72-2.98a.46.46 0 1 0-.8-.46l-1.75 3.03C14.71 9.24 13.39 9 12 9s-2.71.24-4.05.63L6.2 6.6a.46.46 0 1 0-.8.46l1.72 2.98C4.33 11.45 2.5 14.28 2.5 17.5h19c0-3.22-1.83-6.05-4.62-7.46z"/></svg>`, // Android
-      14: `<svg viewBox="0 0 24 24"><path fill="#4285F4" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/></svg>`, // Pixel
-      15: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" fill="#4285F4"/><path fill="#EA4335" d="M12 2a10 10 0 0 0-8.66 5l4.33 7.5A6 6 0 0 1 12 8h8.66A10 10 0 0 0 12 2z"/><path fill="#FBBC05" d="M22 12a10 10 0 0 0-1.34-5H12a6 6 0 0 1 5.2 3l-4.33 7.5A6 6 0 0 1 12 18l4.33 4A10 10 0 0 0 22 12z"/><path fill="#34A853" d="M12 22a10 10 0 0 0 8.66-5L16.33 9.5A6 6 0 0 1 12 16a6 6 0 0 1-5.2-3L2.47 17A10 10 0 0 0 12 22z"/></svg>`, // Chromebook
-      16: `<svg viewBox="0 0 24 24"><path fill="#00A1F1" d="M12 3L2 12h3v8h14v-8h3L12 3zm0 4.5l5 4.5v6H7v-6l5-4.5z"/></svg>` // Nest
+      1: `<svg viewBox="0 0 24 24"><path fill="#4285F4" d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>`,
+      2: `<svg viewBox="0 0 24 24"><path fill="#0F9D58" d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 16H8v-2h5v2zm0-3H8v-2h5v2zm0-3H8v-2h5v2zm5 6h-3v-2h3v2zm0-3h-3v-2h3v2zm-4-5V3.5L18.5 9H13z"/></svg>`,
+      3: `<svg viewBox="0 0 24 24"><path fill="#F4B400" d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm4 16H6V4h7v5h5v9zM8 12h8v4H8z"/></svg>`,
+      4: `<svg viewBox="0 0 24 24"><path fill="#7248B9" d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm1 14h-6v-2h6v2zm0-4h-6v-2h6v2zm-2-4V3.5L18.5 9H13z"/></svg>`,
+      5: `<svg viewBox="0 0 24 24"><path fill="#FF0000" d="M21.58 7.19a2.5 2.5 0 0 0-1.76-1.77C18.25 5 12 5 12 5s-6.25 0-7.82.42a2.5 2.5 0 0 0-1.76 1.77A26.4 26.4 0 0 0 2 12a26.4 26.4 0 0 0 .42 4.81 2.5 2.5 0 0 0 1.76 1.77C5.75 19 12 19 12 19s6.25 0 7.82-.42a2.5 2.5 0 0 0 1.76-1.77A26.4 26.4 0 0 0 22 12a26.4 26.4 0 0 0-.42-4.81zM9.75 15.02V8.98L15 12l-5.25 3.02z"/></svg>`,
+      6: `<svg viewBox="0 0 24 24"><path fill="#4285F4" d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 14H3V5h18v12zm-11-2l6-4-6-4v8z"/></svg>`,
+      7: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="#FBBC05"/><path fill="#4285F4" d="M12 4a8 8 0 0 0-8 8h2a6 6 0 0 1 6-6V4zm0 16a8 8 0 0 0 8-8h-2a6 6 0 0 1-6 6v2z"/><path fill="#34A853" d="M12 1a11 11 0 0 0-11 11h2a9 9 0 0 1 9-9V1zm0 22a11 11 0 0 0 11-11h-2a9 9 0 0 1-9 9v2z"/></svg>`,
+      8: `<svg viewBox="0 0 24 24"><path fill="#4285F4" d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm-1 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"/></svg>`,
+      9: `<svg viewBox="0 0 24 24"><path fill="#EA4335" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>`,
+      10: `<svg viewBox="0 0 24 24"><path fill="#4285F4" d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM11 11h2v5h-2z"/></svg>`,
+      11: `<svg viewBox="0 0 24 24"><path fill="#00832D" d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg>`,
+      12: `<svg viewBox="0 0 24 24"><path fill="#FBBC05" d="M7.71 3.5L1.15 15l3.43 6 6.55-11.5z"/><path fill="#4285F4" d="M16.29 3.5H7.71l6.55 11.5h8.59z"/><path fill="#34A853" d="M22.85 15l-3.43 6H4.58l3.43-6z"/></svg>`,
+      13: `<svg viewBox="0 0 24 24"><path fill="#3DDC84" d="M16.61 15.15c-.46 0-.84-.38-.84-.84s.38-.84.84-.84.84.38.84.84-.38.84-.84.84zm-9.22 0c-.46 0-.84-.38-.84-.84s.38-.84.84-.84.84.38.84.84-.38.84-.84.84zm9.49-5.11l1.72-2.98a.46.46 0 1 0-.8-.46l-1.75 3.03C14.71 9.24 13.39 9 12 9s-2.71.24-4.05.63L6.2 6.6a.46.46 0 1 0-.8.46l1.72 2.98C4.33 11.45 2.5 14.28 2.5 17.5h19c0-3.22-1.83-6.05-4.62-7.46z"/></svg>`,
+      14: `<svg viewBox="0 0 24 24"><path fill="#4285F4" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/></svg>`,
+      15: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" fill="#4285F4"/><path fill="#EA4335" d="M12 2a10 10 0 0 0-8.66 5l4.33 7.5A6 6 0 0 1 12 8h8.66A10 10 0 0 0 12 2z"/><path fill="#FBBC05" d="M22 12a10 10 0 0 0-1.34-5H12a6 6 0 0 1 5.2 3l-4.33 7.5A6 6 0 0 1 12 18l4.33 4A10 10 0 0 0 22 12z"/><path fill="#34A853" d="M12 22a10 10 0 0 0 8.66-5L16.33 9.5A6 6 0 0 1 12 16a6 6 0 0 1-5.2-3L2.47 17A10 10 0 0 0 12 22z"/></svg>`,
+      16: `<svg viewBox="0 0 24 24"><path fill="#00A1F1" d="M12 3L2 12h3v8h14v-8h3L12 3zm0 4.5l5 4.5v6H7v-6l5-4.5z"/></svg>`
     };
 
-    // Render Round 1 Logos
     for (let i = 1; i <= 16; i++) {
       const iconEl = document.getElementById(`icon-${i}`);
       if (iconEl && PRODUCT_LOGOS[i]) iconEl.innerHTML = PRODUCT_LOGOS[i];
